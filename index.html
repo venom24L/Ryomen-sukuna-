@@ -1,0 +1,3850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUKUNA — King of Curses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Noto+Serif+JP:wght@700;900&family=Share+Tech+Mono&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+/* ====== ROOT VARIABLES ====== */
+:root {
+  --black: #050505;
+  --deep: #0a0000;
+  --crimson: #8b0000;
+  --blood: #c0000a;
+  --bone: #d4c9b0;
+  --ash: #1a1a1a;
+  --scar: #3d0000;
+  --glow: #ff1a1a;
+}
+
+/* ====== RESET & BASE ====== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+.section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+}
+
+/* Long sections that need more space don't get locked */
+#techniques, #carnage, #stats {
+  scroll-snap-align: start;
+  min-height: auto;
+}
+
+html { scroll-behavior: auto; overflow-x: hidden; scroll-snap-type: y mandatory; }
+
+body {
+  background: var(--black);
+  color: var(--bone);
+  font-family: 'IM Fell English', serif;
+  cursor: none;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+/* ====== CUSTOM CURSOR ====== */
+#cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--glow);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  box-shadow: 0 0 6px 3px rgba(255,26,26,0.8), 0 0 20px 8px rgba(139,0,0,0.5);
+  transform: translate(-50%,-50%);
+  transition: transform 0.05s linear;
+  mix-blend-mode: screen;
+}
+
+.cursor-trail {
+  position: fixed;
+  width: 6px; height: 6px;
+  background: var(--crimson);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%,-50%);
+  opacity: 0;
+  animation: trailFade 0.4s ease forwards;
+}
+
+@keyframes trailFade {
+  0% { opacity: 0.8; transform: translate(-50%,-50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(0.1); }
+}
+
+/* ====== NOISE OVERLAY ====== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 99990;
+  opacity: 0.35;
+}
+
+/* ====== GLITCH KEYFRAMES ====== */
+@keyframes glitch1 {
+  0%, 94% { clip-path: none; transform: none; }
+  95% { clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); transform: translate(-4px, 0); color: var(--glow); }
+  96% { clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); transform: translate(4px, 0); color: var(--bone); }
+  97% { clip-path: polygon(0 10%, 100% 10%, 100% 30%, 0 30%); transform: translate(-2px, 0); }
+  98%, 100% { clip-path: none; transform: none; }
+}
+
+@keyframes glitch2 {
+  0%, 96% { opacity: 0; }
+  97% { opacity: 1; transform: translate(5px, -2px); color: var(--blood); }
+  99%, 100% { opacity: 0; }
+}
+
+@keyframes flicker {
+  0%, 97% { opacity: 1; }
+  98% { opacity: 0.3; }
+  99% { opacity: 1; }
+  99.5% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+@keyframes tattooBreath {
+  0%, 100% { opacity: 0.12; transform: scale(1); }
+  50% { opacity: 0.22; transform: scale(1.03); }
+}
+
+@keyframes fireFlicker {
+  0% { text-shadow: 0 0 10px #ff4400, 0 0 30px #8b0000, 0 0 60px #3d0000; }
+  25% { text-shadow: 0 0 15px #ff6600, 0 0 40px #cc0000, 0 0 80px #500000; }
+  50% { text-shadow: 0 0 8px #ff2200, 0 0 25px #8b0000, 0 0 50px #2a0000; }
+  75% { text-shadow: 0 0 20px #ff5500, 0 0 45px #aa0000, 0 0 90px #400000; }
+  100% { text-shadow: 0 0 10px #ff4400, 0 0 30px #8b0000, 0 0 60px #3d0000; }
+}
+
+@keyframes pulseRed {
+  0%, 100% { box-shadow: 0 0 15px rgba(139,0,0,0.3); }
+  50% { box-shadow: 0 0 40px rgba(192,0,10,0.7), 0 0 80px rgba(139,0,0,0.4); }
+}
+
+@keyframes shakeViolent {
+  0%, 100% { transform: translate(0,0) rotate(0deg); }
+  10% { transform: translate(-3px,2px) rotate(-0.5deg); }
+  20% { transform: translate(3px,-2px) rotate(0.5deg); }
+  30% { transform: translate(-4px,1px) rotate(-1deg); }
+  40% { transform: translate(4px,-1px) rotate(1deg); }
+  50% { transform: translate(-2px,3px) rotate(-0.3deg); }
+  60% { transform: translate(2px,-3px) rotate(0.3deg); }
+  70% { transform: translate(-3px,-1px) rotate(-0.7deg); }
+  80% { transform: translate(3px,1px) rotate(0.7deg); }
+  90% { transform: translate(-1px,2px) rotate(-0.2deg); }
+}
+
+@keyframes sliceReveal {
+  0% { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); opacity: 0; }
+  100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; }
+}
+
+@keyframes awakeningSlash {
+  0% { clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%); }
+  100% { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); }
+}
+
+@keyframes countUp {
+  from { opacity: 0.3; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scanLine {
+  0% { top: -5%; }
+  100% { top: 105%; }
+}
+
+@keyframes crackReveal {
+  0% { letter-spacing: 20px; opacity: 0; }
+  50% { letter-spacing: 5px; opacity: 0.8; }
+  100% { letter-spacing: 0px; opacity: 1; }
+}
+
+@keyframes bleed {
+  0% { transform: scaleY(0); transform-origin: top; }
+  100% { transform: scaleY(1); transform-origin: top; }
+}
+
+/* ====== SECTION TRANSITIONS ====== */
+.section {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ====== SECTION DIVIDERS (slash cuts) ====== */
+.slash-divider {
+  width: 100%;
+  height: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.slash-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -10%;
+  width: 120%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--crimson) 20%, var(--glow) 50%, var(--crimson) 80%, transparent);
+  transform: rotate(-1.5deg);
+  box-shadow: 0 0 10px var(--crimson), 0 0 25px rgba(139,0,0,0.5);
+}
+
+/* ============================
+   SECTION 1: THE AWAKENING
+   ============================ */
+#awakening {
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Tattoo background layer */
+.tattoo-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  animation: tattooBreath 4s ease-in-out infinite;
+}
+
+/* IMAGE PLACEHOLDER 1: Sukuna Tattoo/Shrine Background */
+.tattoo-bg .img-placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.15;
+}
+
+.img-placeholder {
+  background: linear-gradient(135deg, var(--scar) 0%, var(--ash) 50%, var(--scar) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: var(--crimson);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 1px solid var(--crimson);
+  position: relative;
+  overflow: hidden;
+}
+
+.img-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(139,0,0,0.05) 10px,
+    rgba(139,0,0,0.05) 20px
+  );
+}
+
+.img-placeholder span {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 10px;
+  line-height: 1.8;
+}
+
+.img-placeholder .ph-icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+  display: block;
+  opacity: 0.6;
+}
+
+/* Skull throne placeholder */
+.skull-throne {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 350px;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+/* Scan line effect */
+#awakening::after {
+  content: '';
+  position: absolute;
+  left: 0; width: 100%; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(139,0,0,0.3), transparent);
+  animation: scanLine 3s linear infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.awakening-content {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  animation: awakeningSlash 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+
+.awakening-jp {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(14px, 2vw, 20px);
+  letter-spacing: 15px;
+  color: var(--crimson);
+  margin-bottom: 20px;
+  opacity: 0.8;
+  animation: fadeInUp 1s ease 1.5s both;
+}
+
+.awakening-fullname {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.85;
+  gap: 0;
+}
+
+.awakening-name-top {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(22px, 7vw, 72px);
+  font-weight: 900;
+  color: var(--crimson);
+  letter-spacing: clamp(8px, 3vw, 28px);
+  text-transform: uppercase;
+  opacity: 0.9;
+  animation: fadeInUp 0.8s ease 1s both;
+  display: block;
+  text-shadow: 0 0 20px rgba(139,0,0,0.6);
+}
+
+.awakening-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(52px, 18vw, 160px);
+  font-weight: 900;
+  color: var(--bone);
+  line-height: 0.9;
+  animation: fireFlicker 2s ease-in-out infinite, flicker 8s infinite, crackReveal 1s ease 0.5s both;
+  position: relative;
+  display: block;
+  letter-spacing: clamp(2px, 1vw, 10px);
+}
+
+.awakening-name::before {
+  content: 'SUKUNA';
+  position: absolute;
+  left: 0; top: 0;
+  color: var(--blood);
+  animation: glitch2 5s infinite;
+  pointer-events: none;
+}
+
+.awakening-name::after {
+  content: 'SUKUNA';
+  position: absolute;
+  left: 0; top: 0;
+  color: var(--bone);
+  animation: glitch1 4s infinite;
+  pointer-events: none;
+}
+
+/* ============================
+   MOBILE-FIRST FULL RESPONSIVE
+   ============================ */
+
+/* Touch devices — remove cursor:none */
+@media (hover: none) and (pointer: coarse) {
+  body, a, button, [onclick] { cursor: auto !important; }
+  #cursor, .cursor-trail { display: none !important; }
+  /* Disable heavy animations on touch */
+  .blood-drip-container { display: none !important; }
+  #slashOverlay { display: none !important; }
+  .awakening-name::before, .awakening-name::after { display: none; }
+  @keyframes tattooBreath { 0%,100%{opacity:0.12} }
+  .shrine-kanji { display: none; }
+}
+
+@media (max-width: 768px) {
+  /* NAV */
+  .hamburger { display: flex; }
+  nav .nav-links { display: none; }
+  nav { padding: 0 16px; height: 52px; }
+  .nav-logo { font-size: 15px; }
+  .finger-counter { top: 12px; right: 12px; padding: 8px 10px; font-size: 9px; }
+  .finger-count-num { font-size: 22px; }
+
+  /* AWAKENING */
+  .awakening-content { padding: 20px; }
+  .awakening-jp { font-size: 11px; letter-spacing: 8px; }
+  .awakening-jp-sub { font-size: 28px; }
+  .awakening-sub { font-size: 11px; letter-spacing: 6px; }
+  .tattoo-bg img { object-position: 70% top; }
+
+  /* SECTIONS general */
+  .section { min-height: auto; }
+  #voicelines, #stats, #fallen, #fingers { padding: 50px 16px; }
+  #carnage { padding: 50px 16px; }
+  #shrine { min-height: 80vh; }
+  #techniques { padding: 50px 0 0 !important; }
+
+  /* SECTION HEADERS */
+  .section-label { font-size: 9px; letter-spacing: 4px; }
+  .section-title { font-size: clamp(22px, 8vw, 40px); }
+  .section-header { margin-bottom: 30px; }
+
+  /* TECHNIQUES — force full column stack */
+  .tech-rows { display: flex; flex-direction: column; }
+  .tech-row,
+  .tech-row-reverse { flex-direction: column !important; min-height: auto !important; width: 100%; }
+  .tech-img-side {
+    flex: none !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+  .tech-img-side img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: unset !important;
+  }
+  .tech-info-side {
+    flex: none !important;
+    width: 100% !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: 1px solid var(--scar) !important;
+    padding: 22px 16px !important;
+  }
+  .tech-info-side::before { display: none; }
+  .tech-kanji-big { font-size: 32px; top: 12px; right: 12px; }
+  .tech-bar-wrap { gap: 6px; }
+  .tech-bar-label { width: 80px; font-size: 7px; letter-spacing: 1px; }
+  .tech-bar-val { font-size: 9px; width: 28px; }
+  .tech-sep { display: block; height: 0; }
+  .tech-title { font-size: clamp(16px, 5vw, 22px); margin-bottom: 8px; }
+  .tech-desc { font-size: 12px; margin-bottom: 14px; }
+
+  /* CARNAGE */
+  .battle-list { gap: 14px; }
+  .battle-img-full img { height: auto; max-height: none; }
+  .battle-num-big { font-size: 24px; }
+  .battle-panel-title { font-size: 15px; }
+  .battle-verdict { font-size: 8px; padding: 3px 6px; letter-spacing: 2px; }
+  .bstat-val { font-size: 13px; }
+  .bstat-lbl { font-size: 7px; }
+  .battle-stats-row { gap: 0; }
+  .bstat-div { height: 20px; }
+
+  /* SHRINE */
+  #shrine { min-height: auto; }
+
+  /* GRAVEYARD */
+  .graveyard { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .grave-name { font-size: 11px; }
+  .grave-portrait { width: 55px; height: 55px; }
+
+  /* VOICE LINES */
+  .quotes-carousel { min-height: 260px; }
+  .quote-text { font-size: clamp(15px, 4.5vw, 20px); }
+  .quote-text::before { display: none; }
+  .quote-jp { font-size: 11px; }
+  .quote-context { font-size: 9px; }
+  .quote-btn { width: 36px; height: 36px; font-size: 16px; }
+
+  /* STATS */
+  .stats-grid { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .stats-table { min-width: 520px; }
+  .stats-table th, .stats-table td { padding: 12px 10px; font-size: 12px; }
+  .char-name { font-size: 11px; }
+  .mini-bar { max-width: 70px; }
+  .grade-badge { font-size: 8px; padding: 2px 5px; }
+
+  /* FINGERS */
+  .fingers-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .lore-text { font-size: 13px; }
+
+  /* SLASH DIVIDER */
+  .slash-divider { height: 30px; }
+
+  /* FOOTER */
+  footer { padding: 28px 16px; }
+  .footer-jp { font-size: 28px; }
+  .footer-text { font-size: 9px; }
+
+  /* MOBILE MENU links smaller on short screens */
+  .mobile-menu a { font-size: 18px; letter-spacing: 4px; }
+  .mobile-menu { gap: 20px; }
+
+  /* SCROLL progress thinner */
+  #scrollProgress { width: 3px; }
+}
+
+@media (max-width: 400px) {
+  .awakening-name-top { letter-spacing: 5px; }
+  .graveyard { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .fingers-grid { grid-template-columns: repeat(4, 1fr); }
+  .techniques-grid { gap: 0; }
+  .quote-text { font-size: 14px; }
+}
+
+.awakening-sub {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(12px, 2.5vw, 22px);
+  letter-spacing: 12px;
+  color: var(--crimson);
+  margin-top: 15px;
+  text-transform: uppercase;
+  animation: fadeInUp 1s ease 2s both;
+}
+
+.awakening-jp-sub {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(24px, 5vw, 56px);
+  color: var(--crimson);
+  margin-top: 5px;
+  opacity: 0.7;
+  animation: fadeInUp 1s ease 2.2s both;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--crimson);
+  opacity: 0.6;
+  animation: fadeInUp 1s ease 3s both;
+  z-index: 5;
+}
+
+.finger-counter {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--crimson);
+  text-align: right;
+  text-transform: uppercase;
+  background: rgba(0,0,0,0.8);
+  padding: 12px 16px;
+  border: 1px solid var(--scar);
+  border-right: 3px solid var(--crimson);
+}
+
+.finger-count-num {
+  font-size: 28px;
+  color: var(--bone);
+  display: block;
+  line-height: 1;
+  animation: fireFlicker 3s infinite;
+}
+
+/* Offset for side nav */
+body { padding-left: 160px; }
+
+@media (max-width: 768px) {
+  body { padding-left: 0 !important; padding-bottom: 52px; }
+}
+
+/* ============================
+   SECTION HEADERS (shared)
+   ============================ */
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+  padding: 0 20px;
+}
+
+.section-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 8px;
+  color: var(--crimson);
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.section-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(28px, 5vw, 56px);
+  color: var(--bone);
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--crimson), transparent);
+}
+
+/* ============================
+   SECTION 2: CURSED TECHNIQUES — SPLIT ROW
+   ============================ */
+#techniques {
+  background: var(--deep);
+  padding: 60px 0 0;
+}
+
+.tech-rows { width: 100%; }
+
+.tech-row {
+  display: flex;
+  align-items: stretch;
+  min-height: 360px;
+  cursor: none;
+}
+
+.tech-row-reverse { flex-direction: row-reverse; }
+
+.tech-img-side {
+  flex: 1 1 55%;
+  position: relative;
+  overflow: hidden;
+  min-height: 260px;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tech-img-side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+/* Natural aspect ratio container — applied via JS */
+.tech-img-side.natural-ratio {
+  min-height: 0;
+  height: auto;
+}
+
+.tech-img-side.natural-ratio img {
+  width: 100%;
+  height: auto;
+  object-fit: unset;
+}
+
+.tech-row:hover .tech-img-side img { transform: scale(1.04); }
+
+.tech-img-slash {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, transparent, var(--crimson) 30%, var(--glow) 50%, var(--crimson) 70%, transparent);
+  box-shadow: 0 0 12px var(--crimson);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tech-row:not(.tech-row-reverse) .tech-img-slash { right: 0; }
+.tech-row-reverse .tech-img-slash { left: 0; }
+.tech-row:hover .tech-img-slash { opacity: 1; }
+
+.tech-info-side {
+  flex: 0 0 45%;
+  padding: 36px 30px;
+  background: var(--ash);
+  border-left: 1px solid var(--scar);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.tech-row-reverse .tech-info-side { border-left: none; border-right: 1px solid var(--scar); }
+
+.tech-info-side::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--crimson), transparent);
+}
+
+.tech-num {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--crimson);
+  opacity: 0.6;
+  margin-bottom: 6px;
+}
+
+.tech-kanji-big {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 52px;
+  color: var(--crimson);
+  opacity: 0.2;
+  line-height: 1;
+  position: absolute;
+  top: 16px; right: 16px;
+  pointer-events: none;
+}
+
+.tech-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(18px, 2.5vw, 28px);
+  color: var(--bone);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.tech-desc {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: rgba(212,201,176,0.6);
+  line-height: 1.9;
+  margin-bottom: 18px;
+  flex: 1;
+}
+
+.tech-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.tech-bar-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: rgba(212,201,176,0.3);
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.tech-bar-track {
+  flex: 1;
+  height: 3px;
+  background: var(--scar);
+  overflow: hidden;
+}
+
+.tech-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--crimson), var(--glow));
+  box-shadow: 0 0 6px var(--crimson);
+  transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+}
+
+.tech-bar-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--bone);
+  width: 34px;
+  text-align: right;
+}
+
+.tech-sep {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--scar) 20%, var(--scar) 80%, transparent);
+}
+
+/* ============================
+   SECTION 3: HISTORICAL CARNAGE — BATTLE PANELS
+   ============================ */
+#carnage {
+  background: var(--black);
+  padding: 60px 20px;
+  position: relative;
+}
+
+#carnage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(139,0,0,0.03) 40px, rgba(139,0,0,0.03) 41px);
+  pointer-events: none;
+}
+
+.battle-list {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.battle-panel {
+  background: var(--ash);
+  border: 1px solid var(--scar);
+  overflow: hidden;
+  opacity: 0;
+  animation: sliceReveal 0.8s ease forwards;
+}
+
+.battle-img-full {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+.battle-img-full img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: unset;
+}
+
+.battle-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(5,5,5,0.85) 100%);
+  pointer-events: none;
+}
+
+.battle-num-big {
+  position: absolute;
+  bottom: 10px; right: 14px;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 40px;
+  color: var(--crimson);
+  opacity: 0.22;
+  line-height: 1;
+}
+
+.battle-panel-body {
+  padding: 16px 18px 18px;
+  border-top: 2px solid var(--scar);
+}
+
+.battle-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  gap: 10px;
+}
+
+.battle-vs-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--crimson);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.battle-panel-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(15px, 4vw, 22px);
+  color: var(--bone);
+  line-height: 1.1;
+}
+
+.battle-verdict {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  padding: 4px 9px;
+  border: 1px solid;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.verdict-slain    { color: var(--glow); border-color: var(--glow); box-shadow: 0 0 8px rgba(255,26,26,0.3); }
+.verdict-devoured { color: #ff6600; border-color: #ff6600; box-shadow: 0 0 8px rgba(255,102,0,0.3); }
+.verdict-crushed  { color: var(--crimson); border-color: var(--crimson); }
+.verdict-survived { color: #888; border-color: #555; }
+
+.battle-context {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 12px;
+  color: rgba(212,201,176,0.5);
+  line-height: 1.8;
+  margin-bottom: 12px;
+  border-left: 2px solid var(--scar);
+  padding-left: 10px;
+}
+
+.battle-stats-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.bstat {
+  flex: 1;
+  text-align: center;
+}
+
+.bstat-val {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(13px, 3vw, 17px);
+  color: var(--bone);
+  display: block;
+  line-height: 1.3;
+}
+
+.bstat-lbl {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: rgba(212,201,176,0.3);
+  text-transform: uppercase;
+  display: block;
+}
+
+.bstat-div {
+  width: 1px;
+  height: 28px;
+  background: var(--scar);
+}
+
+.battle-ce-bar {
+  height: 3px;
+  background: var(--scar);
+  overflow: hidden;
+}
+
+.battle-ce-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--crimson), var(--glow));
+  box-shadow: 0 0 6px var(--crimson);
+  transition: width 1.2s ease;
+}
+
+/* ============================
+   SECTION 4: MALEVOLENT SHRINE — MANGA PANEL SPLIT
+   ============================ */
+#shrine {
+  min-height: 100vh;
+  background: var(--black);
+  display: flex;
+  align-items: stretch;
+  position: relative;
+  overflow: hidden;
+}
+
+#shrine::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 20% 50%, rgba(139,0,0,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.shrine-split {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+/* LEFT side — text */
+.shrine-text-side {
+  flex: 0 0 45%;
+  padding: 60px 40px 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.shrine-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: var(--crimson);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.shrine-jp-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(40px, 6vw, 80px);
+  color: var(--crimson);
+  opacity: 0.18;
+  line-height: 1;
+  margin-bottom: -10px;
+  pointer-events: none;
+}
+
+.shrine-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(28px, 4vw, 52px);
+  color: var(--bone);
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.shrine-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--crimson), transparent);
+  margin-bottom: 20px;
+}
+
+.shrine-quote {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: clamp(13px, 1.6vw, 17px);
+  color: rgba(212,201,176,0.65);
+  line-height: 1.9;
+  margin-bottom: 28px;
+  border-left: 2px solid var(--scar);
+  padding-left: 16px;
+}
+
+.shrine-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.shrine-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--crimson);
+  border: 1px solid var(--scar);
+  padding: 4px 10px;
+  text-transform: uppercase;
+}
+
+.shrine-status {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: rgba(212,201,176,0.3);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.shrine-status-dot {
+  width: 6px; height: 6px;
+  background: var(--crimson);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--crimson);
+  animation: pulseRed 1.5s infinite;
+  flex-shrink: 0;
+}
+
+/* RIGHT side — manga panel */
+.shrine-panel-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 40px 40px 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.shrine-manga-frame {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+.shrine-manga-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: contrast(1.1) brightness(0.9) sepia(0.15);
+  /* Red tint overlay via mix-blend */
+  position: relative;
+  z-index: 1;
+}
+
+/* Red tint over manga */
+.shrine-panel-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(139,0,0,0.12);
+  mix-blend-mode: multiply;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Corner brackets */
+.shrine-panel-corner {
+  position: absolute;
+  width: 20px; height: 20px;
+  border-color: var(--crimson);
+  border-style: solid;
+  z-index: 3;
+}
+.shrine-panel-corner.tl { top: -2px; left: -2px;  border-width: 2px 0 0 2px; }
+.shrine-panel-corner.tr { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
+.shrine-panel-corner.bl { bottom: -2px; left: -2px;  border-width: 0 0 2px 2px; }
+.shrine-panel-corner.br { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+
+/* Mobile */
+@media (max-width: 768px) {
+  #shrine { min-height: auto; }
+  .shrine-split { flex-direction: column; }
+  .shrine-text-side { flex: none; width: 100%; padding: 50px 20px 30px; }
+  .shrine-panel-side { flex: none; width: 100%; padding: 0 20px 40px; }
+  .shrine-jp-title { font-size: 40px; }
+  .shrine-title { font-size: 28px; }
+  .shrine-quote { font-size: 13px; }
+}
+
+/* ============================
+   SECTION 5: THE FALLEN
+   ============================ */
+#fallen {
+  background: var(--black);
+  padding: 80px 40px;
+  position: relative;
+}
+
+#fallen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 600px 400px at 20% 50%, rgba(139,0,0,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 600px at 80% 50%, rgba(139,0,0,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.graveyard {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.grave-stone {
+  background: var(--ash);
+  border: 1px solid var(--scar);
+  padding: 25px 15px;
+  text-align: center;
+  cursor: none;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.grave-stone::before {
+  content: '';
+  position: absolute;
+  top: -100%; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(180deg, transparent, rgba(139,0,0,0.4));
+  transition: top 0.4s ease;
+}
+
+.grave-stone:hover::before { top: 0; }
+.grave-stone:hover { border-color: var(--crimson); }
+
+.grave-stone:hover .grave-name {
+  animation: glitch1 0.3s infinite, shakeViolent 0.2s infinite;
+  color: var(--glow);
+}
+
+/* IMAGE PLACEHOLDER 12-17: Character portraits for graves */
+.grave-portrait {
+  width: 70px; height: 70px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--scar);
+  position: relative;
+  z-index: 1;
+}
+
+.grave-portrait .img-placeholder {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+}
+
+.grave-kanji {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 10px;
+  color: var(--crimson);
+  opacity: 0.6;
+  display: block;
+  letter-spacing: 3px;
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.grave-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 14px;
+  color: var(--bone);
+  display: block;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.grave-cause {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(139,0,0,0.7);
+  text-transform: uppercase;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.grave-blood {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 0;
+  background: linear-gradient(180deg, var(--blood), transparent);
+  transition: height 0.4s ease;
+  z-index: 0;
+}
+
+.grave-stone:hover .grave-blood {
+  height: 100%;
+}
+
+/* The "You're Next" grave */
+.grave-stone.next {
+  border-color: var(--crimson);
+  animation: pulseRed 2s ease-in-out infinite;
+  cursor: none;
+}
+
+.grave-stone.next .grave-portrait {
+  background: var(--scar);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-color: var(--crimson);
+}
+
+.grave-stone.next .grave-name {
+  color: var(--crimson);
+  animation: fireFlicker 2s infinite;
+}
+
+.grave-stone.next .grave-cause {
+  color: var(--glow);
+}
+
+/* ============================
+   SECTION 6: 20 FINGERS — UPGRADED
+   ============================ */
+#fingers {
+  background: var(--deep);
+  padding: 60px 20px 80px;
+  position: relative;
+}
+
+.fingers-lore {
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto 36px;
+}
+
+.lore-text {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: rgba(212,201,176,0.45);
+  line-height: 1.9;
+}
+
+/* Progress bar */
+.fp-bar-wrap {
+  max-width: 600px;
+  margin: 0 auto 36px;
+}
+
+.fp-bar-track {
+  height: 6px;
+  background: var(--scar);
+  position: relative;
+  overflow: visible;
+  margin-bottom: 10px;
+}
+
+.fp-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--crimson), var(--glow));
+  transition: width 0.6s cubic-bezier(0.16,1,0.3,1);
+  position: relative;
+}
+
+.fp-bar-glow {
+  position: absolute;
+  top: -3px;
+  width: 12px; height: 12px;
+  background: var(--glow);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--glow), 0 0 25px var(--crimson);
+  left: 0%;
+  transition: left 0.6s cubic-bezier(0.16,1,0.3,1);
+  transform: translateX(-50%);
+}
+
+.fp-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fp-bar-count {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 22px;
+  color: var(--bone);
+}
+
+.fp-bar-count span {
+  color: var(--crimson);
+  animation: fireFlicker 2s infinite;
+}
+
+.fp-bar-status {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(212,201,176,0.35);
+  text-transform: uppercase;
+}
+
+/* Finger grid */
+.fingers-grid {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+}
+
+.finger-slot {
+  aspect-ratio: 1;
+  border: 1px solid var(--scar);
+  background: var(--ash);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.finger-slot::after {
+  content: attr(data-num);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  color: rgba(139,0,0,0.2);
+}
+
+.finger-slot.found {
+  border-color: var(--crimson);
+  background: var(--scar);
+}
+
+.finger-slot.found::after {
+  content: '☠';
+  font-size: 14px;
+  color: var(--bone);
+  animation: fadeInUp 0.3s ease;
+}
+
+.finger-slot.consuming {
+  animation: consumePulse 0.6s ease;
+}
+
+@keyframes consumePulse {
+  0%   { transform: scale(1);   border-color: var(--scar); }
+  30%  { transform: scale(1.4); border-color: var(--glow); box-shadow: 0 0 20px var(--glow); }
+  60%  { transform: scale(0.9); border-color: var(--crimson); }
+  100% { transform: scale(1);   border-color: var(--crimson); }
+}
+
+/* Hint button */
+.hint-wrap {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.hint-btn {
+  background: none;
+  border: 1px solid var(--scar);
+  color: rgba(212,201,176,0.5);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  padding: 10px 20px;
+  cursor: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.hint-btn:hover {
+  border-color: var(--crimson);
+  color: var(--bone);
+}
+
+.hint-btn:active { transform: scale(0.97); }
+
+.hint-icon { font-size: 14px; }
+
+.hint-cost {
+  color: rgba(212,201,176,0.25);
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+
+.hint-bubble {
+  display: none;
+  position: absolute;
+  left: 50%; transform: translateX(-50%);
+  top: calc(100% + 10px);
+  background: var(--ash);
+  border: 1px solid var(--crimson);
+  border-left: 3px solid var(--glow);
+  padding: 10px 18px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--bone);
+  white-space: nowrap;
+  z-index: 10;
+  animation: fadeInUp 0.3s ease;
+}
+
+.hint-bubble.visible { display: block; }
+
+/* Consume toast notification */
+.consume-toast {
+  position: fixed;
+  bottom: 30px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ash);
+  border: 1px solid var(--crimson);
+  border-left: 3px solid var(--glow);
+  padding: 12px 24px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--bone);
+  z-index: 99999;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.consume-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Hidden finger — more visible on touch */
+.hidden-finger {
+  position: absolute;
+  width: 44px; height: 44px;
+  cursor: none;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--crimson);
+  border: 1px solid var(--crimson);
+  background: rgba(5,5,5,0.85);
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 0 12px rgba(139,0,0,0.6);
+}
+
+.hidden-finger.flashing {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: all;
+  animation: fingerFlash 0.4s ease;
+}
+
+.hidden-finger.consumed {
+  opacity: 0 !important;
+  transform: scale(2) !important;
+  pointer-events: none !important;
+  transition: all 0.4s ease !important;
+}
+
+@keyframes fingerFlash {
+  0%   { box-shadow: 0 0 4px rgba(139,0,0,0.4); }
+  50%  { box-shadow: 0 0 25px rgba(255,26,26,0.9), 0 0 50px rgba(139,0,0,0.5); }
+  100% { box-shadow: 0 0 12px rgba(139,0,0,0.6); }
+}
+
+/* Secret panel */
+.secret-panel {
+  display: none;
+  background: var(--scar);
+  border: 2px solid var(--crimson);
+  padding: 30px 20px;
+  text-align: center;
+  max-width: 500px;
+  margin: 20px auto 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.secret-slash {
+  position: absolute;
+  top: 0; left: 30%;
+  width: 2px; height: 100%;
+  background: linear-gradient(180deg, transparent, var(--crimson) 40%, transparent);
+  opacity: 0.2;
+  transform: skewX(-15deg);
+}
+
+.secret-panel.revealed {
+  display: block;
+  animation: sliceReveal 0.6s ease;
+}
+
+.secret-panel h3 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(16px, 4vw, 22px);
+  color: var(--glow);
+  margin-bottom: 14px;
+  animation: fireFlicker 2s infinite;
+}
+
+.secret-panel p {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: var(--bone);
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.secret-image {
+  width: 200px; height: 200px;
+  margin: 15px auto;
+}
+
+/* ============================
+   DOMAIN EXPANSION OVERLAY
+   ============================ */
+.domain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999998;
+  pointer-events: none;
+  display: none;
+}
+
+.domain-overlay.active {
+  display: block;
+  pointer-events: all;
+}
+
+/* Phase 1: slash lines */
+.de-slash-container {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.de-slash-line {
+  position: absolute;
+  top: -10%; height: 120%;
+  width: 4px;
+  background: linear-gradient(180deg, transparent, white 30%, var(--glow) 50%, white 70%, transparent);
+  box-shadow: 0 0 20px var(--glow), 0 0 60px var(--crimson);
+  opacity: 0;
+  transform-origin: center;
+  animation: deSlash 0.5s ease forwards;
+}
+
+@keyframes deSlash {
+  0%   { opacity: 0; transform: scaleY(0) skewX(var(--skew)); }
+  30%  { opacity: 1; transform: scaleY(1) skewX(var(--skew)); }
+  80%  { opacity: 0.8; }
+  100% { opacity: 0; transform: scaleY(1.1) skewX(var(--skew)); }
+}
+
+/* Phase 2: red flood */
+.de-red-flood {
+  position: absolute;
+  inset: 0;
+  background: #0a0000;
+  opacity: 0;
+  z-index: 2;
+  transition: opacity 0.4s ease;
+}
+
+.de-red-flood.visible {
+  opacity: 1;
+}
+
+/* Phase 3: content */
+.de-content {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(139,0,0,0.25) 0%, transparent 70%);
+}
+
+.de-content.visible { opacity: 1; }
+
+.de-kanji-bg {
+  position: absolute;
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(80px, 25vw, 260px);
+  color: var(--crimson);
+  opacity: 0.06;
+  pointer-events: none;
+  white-space: nowrap;
+  animation: tattooBreath 3s ease-in-out infinite;
+}
+
+.de-sequence {
+  text-align: center;
+  max-width: 700px;
+  width: 100%;
+}
+
+.de-line {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  margin-bottom: 20px;
+}
+
+.de-line.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.de-jp {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(16px, 3vw, 24px);
+  color: var(--crimson);
+  letter-spacing: 14px;
+  opacity: 0.8;
+}
+
+.de-main-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(28px, 8vw, 80px);
+  color: var(--bone);
+  display: block;
+  animation: fireFlicker 2s ease-in-out infinite;
+  text-shadow: 0 0 30px rgba(139,0,0,0.8), 0 0 80px rgba(139,0,0,0.4);
+  letter-spacing: 4px;
+}
+
+.de-quote {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: clamp(16px, 2.5vw, 22px);
+  color: rgba(212,201,176,0.8);
+  line-height: 1.8;
+}
+
+.de-quote-2 {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: clamp(14px, 2vw, 18px);
+  color: rgba(212,201,176,0.5);
+  line-height: 1.8;
+}
+
+.de-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-top: 10px;
+  border: 1px solid var(--scar);
+  padding: 20px 30px;
+  background: rgba(10,0,0,0.6);
+}
+
+.de-stat { text-align: center; flex: 1; }
+
+.de-stat-val {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(20px, 4vw, 36px);
+  color: var(--crimson);
+  display: block;
+  animation: fireFlicker 2s infinite;
+}
+
+.de-stat-lbl {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(212,201,176,0.3);
+  text-transform: uppercase;
+  display: block;
+  margin-top: 4px;
+}
+
+.de-stat-sep {
+  width: 1px;
+  height: 50px;
+  background: var(--scar);
+  flex-shrink: 0;
+}
+
+.de-close {
+  margin-top: 40px;
+  background: none;
+  border: 1px solid var(--scar);
+  color: rgba(212,201,176,0.3);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 4px;
+  padding: 12px 28px;
+  cursor: none;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transition: opacity 0.6s ease 0.3s, border-color 0.3s ease, color 0.3s ease;
+}
+
+.de-close.show {
+  opacity: 1;
+}
+
+.de-close:hover {
+  border-color: var(--crimson);
+  color: var(--bone);
+}
+
+/* ============================
+   SIDE NAVIGATION — with labels
+   ============================ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9998;
+  padding: 0 20px 0 170px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, rgba(0,0,0,0.95), transparent);
+  pointer-events: none;
+}
+
+.nav-logo {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 16px;
+  color: var(--crimson);
+  letter-spacing: 4px;
+  pointer-events: all;
+}
+
+.nav-links { display: none; }
+
+/* Side nav rail */
+#sideNav {
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  width: 160px;
+  z-index: 9997;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  background: rgba(4,0,0,0.85);
+  border-right: 1px solid var(--scar);
+  backdrop-filter: blur(10px);
+  padding: 24px 0;
+  overflow: hidden;
+}
+
+/* Top logo inside side nav */
+#sideNav::before {
+  content: '呪王';
+  font-family: 'Noto Serif JP', serif;
+  font-size: 11px;
+  color: var(--crimson);
+  letter-spacing: 6px;
+  text-align: center;
+  display: block;
+  position: absolute;
+  top: 18px; left: 0; right: 0;
+  opacity: 0.5;
+}
+
+/* Bottom line */
+#sideNav::after {
+  content: '';
+  position: absolute;
+  top: 40px; left: 16px; right: 16px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--scar), transparent);
+}
+
+.side-nav-item {
+  position: relative;
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  cursor: none;
+  transition: all 0.2s ease;
+  gap: 10px;
+  border-left: 2px solid transparent;
+  flex-shrink: 0;
+}
+
+.side-nav-item:hover {
+  background: rgba(139,0,0,0.1);
+  border-left-color: var(--scar);
+}
+
+.side-nav-item.active {
+  background: rgba(139,0,0,0.18);
+  border-left-color: var(--crimson);
+}
+
+.side-nav-item.active .side-nav-dot {
+  background: var(--glow);
+  box-shadow: 0 0 6px var(--glow);
+}
+
+.side-nav-item.active .side-nav-label {
+  color: var(--bone);
+}
+
+.side-nav-item.active .side-nav-num {
+  color: var(--crimson);
+}
+
+.side-nav-dot {
+  width: 4px; height: 4px;
+  background: rgba(139,0,0,0.4);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.side-nav-item:hover .side-nav-dot {
+  background: var(--crimson);
+}
+
+.side-nav-num {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  color: rgba(139,0,0,0.35);
+  letter-spacing: 1px;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+  line-height: 1;
+  width: 14px;
+}
+
+.side-nav-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(212,201,176,0.3);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
+  line-height: 1;
+}
+
+.side-nav-item:hover .side-nav-label {
+  color: rgba(212,201,176,0.7);
+}
+
+/* ============================
+   SHARP SCROLL TRANSITION
+   ============================ */
+#navToggle {
+  position: fixed;
+  top: 10px; left: 10px;
+  z-index: 99999;
+  width: 40px; height: 40px;
+  background: rgba(0,0,0,0.9);
+  border: 1px solid var(--crimson);
+  border-radius: 4px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 0 10px rgba(139,0,0,0.4);
+}
+
+#navToggle span {
+  display: block;
+  width: 6px; height: 6px;
+  background: var(--crimson);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+#navToggle.open span:nth-child(1) {
+  transform: translateY(11px) rotate(45deg);
+  border-radius: 0;
+  width: 16px; height: 2px;
+  background: var(--glow);
+}
+#navToggle.open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+#navToggle.open span:nth-child(3) {
+  transform: translateY(-11px) rotate(-45deg);
+  border-radius: 0;
+  width: 16px; height: 2px;
+  background: var(--glow);
+}
+
+/* Overlay */
+#navOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 9996;
+}
+#navOverlay.show { display: block; }
+
+/* ====== MOBILE ====== */
+@media (max-width: 768px) {
+  #navToggle { display: flex !important; }
+
+  #sideNav {
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+    width: 200px;
+    box-shadow: 6px 0 30px rgba(0,0,0,0.9);
+    z-index: 99998;
+  }
+  #sideNav.open { transform: translateX(0); }
+
+  body { padding-left: 0 !important; padding-bottom: 0 !important; }
+  nav  { padding-left: 60px; }
+
+  .finger-counter { top: 10px; right: 10px; }
+}
+
+/* ============================
+   SHARP SCROLL TRANSITION
+   ============================ */
+.section-transition {
+  position: fixed;
+  inset: 0;
+  background: var(--black);
+  z-index: 99997;
+  pointer-events: none;
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  transition: clip-path 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-transition.active {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* ============================
+   FOOTER
+   ============================ */
+footer {
+  background: #000;
+  padding: 40px;
+  text-align: center;
+  border-top: 1px solid var(--scar);
+}
+
+.footer-jp {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 40px;
+  color: var(--crimson);
+  opacity: 0.3;
+  margin-bottom: 10px;
+}
+
+.footer-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: rgba(212,201,176,0.2);
+  text-transform: uppercase;
+}
+
+/* ============================
+   LOADING SCREEN
+   ============================ */
+#loadingScreen {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+}
+
+#loadingScreen.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-kanji {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 80px;
+  color: var(--crimson);
+  animation: fireFlicker 1s infinite, flicker 2s infinite;
+  margin-bottom: 30px;
+}
+
+.loading-bar-track {
+  width: 200px;
+  height: 2px;
+  background: var(--scar);
+  position: relative;
+  overflow: hidden;
+}
+
+.loading-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--crimson), var(--glow));
+  box-shadow: 0 0 8px var(--glow);
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.loading-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--crimson);
+  margin-top: 14px;
+  text-transform: uppercase;
+  animation: flicker 1.5s infinite;
+}
+
+/* ============================
+   SCROLL PROGRESS BAR (left side, blood red)
+   ============================ */
+#scrollProgress {
+  position: fixed;
+  left: 0; top: 0;
+  width: 4px;
+  height: 0%;
+  background: linear-gradient(180deg, var(--crimson), var(--glow));
+  z-index: 99995;
+  box-shadow: 0 0 10px var(--crimson), 0 0 20px rgba(139,0,0,0.5);
+  transition: height 0.05s linear;
+}
+#scrollProgress::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; left: -3px;
+  width: 10px; height: 10px;
+  background: var(--glow);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--glow), 0 0 20px var(--crimson);
+  animation: pulseRed 1s infinite;
+}
+
+/* ============================
+   BLOOD DRIP NAVBAR
+   ============================ */
+.blood-drip-container {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.blood-drop {
+  position: absolute;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--blood), #600);
+  border-radius: 0 0 50% 50%;
+  animation: dropFall linear infinite;
+  transform-origin: top center;
+}
+
+@keyframes dropFall {
+  0%   { height: 0; opacity: 0.9; transform: translateY(0); }
+  40%  { height: 30px; opacity: 0.8; }
+  80%  { height: 20px; opacity: 0.6; transform: translateY(60px); }
+  100% { height: 5px; opacity: 0; transform: translateY(90px); }
+}
+
+/* ============================
+   CURSOR GROW ON HOVER
+   ============================ */
+#cursor.hovering {
+  width: 24px; height: 24px;
+  box-shadow: 0 0 12px 6px rgba(255,26,26,0.9), 0 0 40px 15px rgba(139,0,0,0.6);
+  background: var(--blood);
+}
+
+/* ============================
+   SLASH SCREEN OVERLAY (technique cards)
+   ============================ */
+#slashOverlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99994;
+  overflow: hidden;
+}
+
+.slash-line {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, transparent 0%, var(--glow) 30%, white 50%, var(--glow) 70%, transparent 100%);
+  box-shadow: 0 0 10px var(--glow), 0 0 30px var(--crimson);
+  opacity: 0;
+  transform: skewX(-15deg);
+  animation: slashFlash 0.4s ease forwards;
+}
+
+@keyframes slashFlash {
+  0%   { opacity: 0; }
+  20%  { opacity: 1; }
+  60%  { opacity: 0.8; }
+  100% { opacity: 0; }
+}
+
+/* ============================
+   MOBILE HAMBURGER MENU
+   ============================ */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: none;
+  z-index: 200;
+  padding: 5px;
+}
+
+.hamburger span {
+  display: block;
+  height: 2px;
+  background: var(--bone);
+  transition: all 0.3s ease;
+}
+
+.hamburger span:nth-child(1) { width: 24px; }
+.hamburger span:nth-child(2) { width: 18px; margin-left: 6px; background: var(--crimson); }
+.hamburger span:nth-child(3) { width: 12px; margin-left: 12px; }
+
+.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); width: 24px; }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(9px,-9px); width: 24px; margin-left: 0; }
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.97);
+  z-index: 9990;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  transition: clip-path 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+
+.mobile-menu.open {
+  display: flex;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.mobile-menu a {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 22px;
+  color: var(--bone);
+  text-decoration: none;
+  letter-spacing: 6px;
+  cursor: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.mobile-menu a::before {
+  content: '— ';
+  color: var(--crimson);
+}
+
+.mobile-menu a:hover { color: var(--crimson); }
+
+.mobile-menu-slash {
+  position: absolute;
+  width: 2px; height: 100%;
+  left: 40%;
+  background: linear-gradient(180deg, transparent, var(--scar) 30%, var(--crimson) 50%, var(--scar) 70%, transparent);
+  opacity: 0.3;
+  transform: skewX(-20deg);
+}
+
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+  nav .nav-links { display: none; }
+}
+
+/* ============================
+   VOICE LINES SECTION
+   ============================ */
+#voicelines {
+  background: var(--black);
+  padding: 80px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+#voicelines::before {
+  content: '言';
+  position: absolute;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 400px;
+  color: var(--crimson);
+  opacity: 0.03;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.quotes-carousel {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quote-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
+  pointer-events: none;
+}
+
+.quote-slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.quote-slide.exiting {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+
+.quote-jp {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(12px, 2vw, 16px);
+  color: var(--crimson);
+  letter-spacing: 5px;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.quote-text {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: clamp(18px, 3vw, 28px);
+  color: var(--bone);
+  line-height: 1.7;
+  max-width: 700px;
+  position: relative;
+}
+
+.quote-text::before {
+  content: '"';
+  position: absolute;
+  left: -40px; top: -10px;
+  font-size: 80px;
+  color: var(--crimson);
+  opacity: 0.2;
+  font-style: normal;
+  line-height: 1;
+}
+
+.quote-context {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: rgba(139,0,0,0.6);
+  margin-top: 20px;
+  text-transform: uppercase;
+}
+
+.quote-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.quote-btn {
+  background: none;
+  border: 1px solid var(--scar);
+  color: var(--crimson);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 18px;
+  width: 40px; height: 40px;
+  cursor: none;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.quote-btn:hover {
+  border-color: var(--crimson);
+  background: var(--scar);
+  box-shadow: 0 0 15px rgba(139,0,0,0.4);
+}
+
+.quote-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.quote-dot {
+  width: 6px; height: 6px;
+  background: var(--scar);
+  transform: rotate(45deg);
+  transition: background 0.3s ease;
+  cursor: none;
+}
+
+.quote-dot.active {
+  background: var(--crimson);
+  box-shadow: 0 0 6px var(--crimson);
+}
+
+/* ============================
+   STATS COMPARISON SECTION
+   ============================ */
+#stats {
+  background: var(--deep);
+  padding: 80px 40px;
+  position: relative;
+}
+
+.stats-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.stats-table th {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: rgba(212,201,176,0.4);
+  text-transform: uppercase;
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--scar);
+}
+
+.stats-table td {
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(61,0,0,0.4);
+  font-family: 'IM Fell English', serif;
+  font-size: 14px;
+}
+
+.stats-table tr.sukuna-row {
+  background: rgba(139,0,0,0.12);
+  border-left: 3px solid var(--crimson);
+  animation: pulseRed 3s infinite;
+}
+
+.stats-table tr.sukuna-row td {
+  color: var(--bone);
+}
+
+.stats-table tr:not(.sukuna-row) td {
+  color: rgba(212,201,176,0.5);
+}
+
+.char-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.char-name .char-emoji { font-size: 18px; }
+
+.stat-bar-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mini-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--scar);
+  max-width: 120px;
+  overflow: hidden;
+}
+
+.mini-fill {
+  height: 100%;
+  background: var(--crimson);
+  box-shadow: 0 0 4px var(--crimson);
+}
+
+.sukuna-row .mini-fill {
+  background: linear-gradient(90deg, var(--crimson), var(--glow));
+  box-shadow: 0 0 8px var(--glow);
+}
+
+.grade-badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  padding: 3px 8px;
+  border: 1px solid;
+}
+
+.grade-special { border-color: var(--glow); color: var(--glow); }
+.grade-1 { border-color: var(--crimson); color: var(--crimson); }
+.grade-2 { border-color: rgba(212,201,176,0.3); color: rgba(212,201,176,0.3); }
+
+/* responsive handled above */
+</style>
+</head>
+<body>
+
+<!-- ====== CURSOR ====== -->
+<div id="cursor"></div>
+
+<!-- ====== SECTION TRANSITION WIPE ====== -->
+<div class="section-transition" id="wipe"></div>
+
+<!-- ====== FINGER COUNTER (fixed) ====== -->
+<div class="finger-counter">
+  <span>FINGERS CONSUMED</span>
+  <span class="finger-count-num" id="fingerDisplay">0</span>
+  <span>/ 20</span>
+</div>
+
+<!-- ====== SCROLL PROGRESS ====== -->
+<div id="scrollProgress"></div>
+
+<!-- ====== SLASH SCREEN OVERLAY ====== -->
+<div id="slashOverlay"></div>
+
+<!-- ====== NAV TOGGLE (mobile) ====== -->
+<button id="navToggle" onclick="toggleSideNav()">
+  <span></span><span></span><span></span>
+</button>
+<div id="navOverlay" onclick="toggleSideNav()"></div>
+
+<!-- ====== TOP BAR (logo only) ====== -->
+<nav id="mainNav">
+  <span class="nav-logo">呪王</span>
+  <div class="blood-drip-container" id="bloodDrips"></div>
+</nav>
+
+<!-- ====== SIDE NAVIGATION ====== -->
+<div id="sideNav">
+  <div class="side-nav-item active" data-section="awakening" onclick="navTo('awakening')">
+    <span class="side-nav-dot"></span>
+    <span class="side-nav-num">01</span>
+    <span class="side-nav-label">Awakening</span>
+  </div>
+  <div class="side-nav-item" data-section="techniques" onclick="navTo('techniques')">
+    <span class="side-nav-dot"></span>
+    <span class="side-nav-num">02</span>
+    <span class="side-nav-label">Techniques</span>
+  </div>
+  <div class="side-nav-item" data-section="carnage" onclick="navTo('carnage')">
+    <span class="side-nav-dot"></span>
+    <span class="side-nav-num">03</span>
+    <span class="side-nav-label">Carnage</span>
+  </div>
+  <div class="side-nav-item" data-section="shrine" onclick="navTo('shrine')">
+    <span class="side-nav-dot"></span>
+    <span class="side-nav-num">04</span>
+    <span class="side-nav-label">Shrine</span>
+  </div>
+  <div class="side-nav-item" data-section="voicelines" onclick="navTo('voicelines')">
+    <span class="side-nav-dot"></span>
+    <span class="side-nav-num">05</span>
+    <span class="side-nav-label">Voice Lines</span>
+  </div>
+  <div class="side-nav-item" data-section="fallen" onclick="navTo('fallen')">
+    <span class="side-nav-dot"></span>
+    <span class="side-nav-num">06</span>
+    <span class="side-nav-label">The Fallen</span>
+  </div>
+  <div class="side-nav-item" data-section="stats" onclick="navTo('stats')">
+    <span class="side-nav-dot"></span>
+    <span class="side-nav-num">07</span>
+    <span class="side-nav-label">Stats</span>
+  </div>
+  <div class="side-nav-item" data-section="fingers" onclick="navTo('fingers')">
+    <span class="side-nav-dot"></span>
+    <span class="side-nav-num">08</span>
+    <span class="side-nav-label">20 Fingers</span>
+  </div>
+</div>
+
+<!-- ============================
+     SECTION 1: THE AWAKENING
+     ============================ -->
+<section class="section" id="awakening">
+  
+  <!-- Hidden finger #1 — top left corner -->
+  <div class="hidden-finger" style="top:80px;left:15px;opacity:0.08;" data-finger="1" title="🖐 A cursed finger lurks...">☠</div>
+
+  <!-- Real background image -->
+  <div class="tattoo-bg">
+    <img src="https://i.postimg.cc/hjhnvSMd/e07355f80fc51a74721a8d06af15ea83.jpg"
+         alt="Sukuna background"
+         style="width:100%;height:100vh;object-fit:cover;object-position:center top;opacity:0.55;display:block;">
+  </div>
+
+  <!-- Dark gradient overlay for text readability -->
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 40%,rgba(0,0,0,0.7) 80%,rgba(5,5,5,1) 100%);z-index:3;pointer-events:none"></div>
+
+  <!-- Main text content -->
+  <div class="awakening-content">
+    <p class="awakening-jp">呪 王 覚 醒</p>
+    <div class="awakening-fullname">
+      <span class="awakening-name-top">RYOMEN</span>
+      <span class="awakening-name">SUKUNA</span>
+    </div>
+    <p class="awakening-sub">King &nbsp;·&nbsp; Of &nbsp;·&nbsp; Curses</p>
+    <p class="awakening-jp-sub">両面宿儺</p>
+  </div>
+
+  <p class="scroll-hint">— ENTER THE DOMAIN —</p>
+</section>
+
+<div class="slash-divider"></div>
+
+<!-- ============================
+     SECTION 2: CURSED TECHNIQUES
+     ============================ -->
+<section class="section" id="techniques">
+  <div class="section-header">
+    <span class="section-label">// Innate Technique</span>
+    <h2 class="section-title">Cursed Techniques</h2>
+  </div>
+
+  <div class="tech-rows">
+
+    <!-- CLEAVE -->
+    <div class="tech-row" data-finger="2">
+      <div class="tech-img-side">
+        <img src="https://i.postimg.cc/nhgc6Sxf/e41b612d5679c9ad071363a1a2b9a081.jpg" alt="Cleave">
+        <div class="tech-img-slash"></div>
+      </div>
+      <div class="tech-info-side">
+        <span class="tech-num">01</span>
+        <span class="tech-kanji-big">解</span>
+        <h3 class="tech-title">Cleave</h3>
+        <p class="tech-desc">Slices the target based on their toughness and cursed energy — the cut adapts and scales to destroy anything in a single stroke. Nothing survives contact.</p>
+        <div class="tech-bar-wrap">
+          <span class="tech-bar-label">DESTRUCTIVE FORCE</span>
+          <div class="tech-bar-track"><div class="tech-bar-fill" style="width:85%"></div></div>
+          <span class="tech-bar-val">85%</span>
+        </div>
+        <div class="tech-bar-wrap">
+          <span class="tech-bar-label">CURSED ENERGY USE</span>
+          <div class="tech-bar-track"><div class="tech-bar-fill" style="width:55%"></div></div>
+          <span class="tech-bar-val">55%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-sep"></div>
+
+    <!-- DISMANTLE -->
+    <div class="tech-row tech-row-reverse" data-finger="3">
+      <div class="tech-img-side">
+        <img src="https://i.postimg.cc/Kv9Y5vs2/66f3f742b2cb70e595705fc234de4b8f.jpg" alt="Dismantle">
+        <div class="tech-img-slash"></div>
+      </div>
+      <div class="tech-info-side">
+        <span class="tech-num">02</span>
+        <span class="tech-kanji-big">捌</span>
+        <h3 class="tech-title">Dismantle</h3>
+        <p class="tech-desc">A fixed-output slash unadjusted for any target. Raw, indiscriminate. The air itself is torn apart. No adaptation — just absolute severance.</p>
+        <div class="tech-bar-wrap">
+          <span class="tech-bar-label">DESTRUCTIVE FORCE</span>
+          <div class="tech-bar-track"><div class="tech-bar-fill" style="width:92%"></div></div>
+          <span class="tech-bar-val">92%</span>
+        </div>
+        <div class="tech-bar-wrap">
+          <span class="tech-bar-label">RANGE</span>
+          <div class="tech-bar-track"><div class="tech-bar-fill" style="width:88%"></div></div>
+          <span class="tech-bar-val">88%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-sep"></div>
+
+    <!-- FUGA -->
+    <div class="tech-row" data-finger="4">
+      <div class="tech-img-side">
+        <img src="https://i.postimg.cc/8z9PqXGG/b2a15d6f0675d161d23d18cd10fc675d.jpg" alt="Fuga">
+        <div class="tech-img-slash"></div>
+      </div>
+      <div class="tech-info-side">
+        <span class="tech-num">03</span>
+        <span class="tech-kanji-big">風花</span>
+        <h3 class="tech-title">Fuga — Open</h3>
+        <p class="tech-desc">Stolen and refined. A blazing arrow of concentrated cursed energy that reduces everything in its path to silence and ash. The pinnacle of destructive output.</p>
+        <div class="tech-bar-wrap">
+          <span class="tech-bar-label">DESTRUCTIVE FORCE</span>
+          <div class="tech-bar-track"><div class="tech-bar-fill" style="width:99%"></div></div>
+          <span class="tech-bar-val">99%</span>
+        </div>
+        <div class="tech-bar-wrap">
+          <span class="tech-bar-label">AREA OF EFFECT</span>
+          <div class="tech-bar-track"><div class="tech-bar-fill" style="width:96%"></div></div>
+          <span class="tech-bar-val">96%</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="slash-divider"></div>
+
+<!-- ============================
+     SECTION 3: HISTORICAL CARNAGE
+     ============================ -->
+<section class="section" id="carnage">
+  <div class="hidden-finger" style="top:40px;right:30px;opacity:0.06;" data-finger="5">☠</div>
+
+  <div class="section-header">
+    <span class="section-label">// Recorded Massacres</span>
+    <h2 class="section-title">Historical Carnage</h2>
+  </div>
+
+  <div class="battle-list">
+
+    <!-- BATTLE 1: vs GOJO -->
+    <div class="battle-panel" style="animation-delay:0.1s">
+      <div class="battle-img-full">
+        <img src="https://i.postimg.cc/2yZPLGJH/c0fbcc1288a1ad700cad18af95e44e1d.jpg" alt="Sukuna vs Gojo">
+        <div class="battle-img-overlay"><span class="battle-num-big">001</span></div>
+      </div>
+      <div class="battle-panel-body">
+        <div class="battle-panel-header">
+          <div><span class="battle-vs-tag">vs</span><h3 class="battle-panel-title">Satoru Gojo</h3></div>
+          <span class="battle-verdict verdict-slain">SLAIN</span>
+        </div>
+        <p class="battle-context">A battle for the title of "The Strongest." Sukuna used World Cutting Slash — targeting space itself — to bypass Infinity and defeat the modern era's greatest sorcerer.</p>
+        <div class="battle-stats-row">
+          <div class="bstat"><span class="bstat-val">World Slash</span><span class="bstat-lbl">Key Move</span></div>
+          <div class="bstat-div"></div>
+          <div class="bstat"><span class="bstat-val">Infinity</span><span class="bstat-lbl">Bypassed</span></div>
+          <div class="bstat-div"></div>
+          <div class="bstat"><span class="bstat-val">Ch.236</span><span class="bstat-lbl">Chapter</span></div>
+        </div>
+        <div class="battle-ce-bar"><div class="battle-ce-fill" style="width:100%"></div></div>
+      </div>
+    </div>
+
+    <!-- BATTLE 2: vs MAHORAGA -->
+    <div class="battle-panel" style="animation-delay:0.2s">
+      <div class="battle-img-full">
+        <img src="https://i.postimg.cc/G3T0f3pW/6f06d327102b5c781fab247bca727bec.jpg" alt="Sukuna vs Mahoraga">
+        <div class="battle-img-overlay"><span class="battle-num-big">002</span></div>
+      </div>
+      <div class="battle-panel-body">
+        <div class="battle-panel-header">
+          <div><span class="battle-vs-tag">vs</span><h3 class="battle-panel-title">Mahoraga</h3></div>
+          <span class="battle-verdict verdict-slain">SLAIN</span>
+        </div>
+        <p class="battle-context">Summoned to save Megumi from an uncontrollable Shikigami. Sukuna overwhelmed Mahoraga with Malevolent Shrine and Fuga before it could fully adapt to his slashes.</p>
+        <div class="battle-stats-row">
+          <div class="bstat"><span class="bstat-val">Fuga</span><span class="bstat-lbl">Finisher</span></div>
+          <div class="bstat-div"></div>
+          <div class="bstat"><span class="bstat-val">800m</span><span class="bstat-lbl">Destruction</span></div>
+          <div class="bstat-div"></div>
+          <div class="bstat"><span class="bstat-val">Outpaced</span><span class="bstat-lbl">Adaptation</span></div>
+        </div>
+        <div class="battle-ce-bar"><div class="battle-ce-fill" style="width:92%"></div></div>
+      </div>
+    </div>
+
+    <!-- BATTLE 3: vs JOGO -->
+    <div class="battle-panel" style="animation-delay:0.3s">
+      <div class="battle-img-full">
+        <img src="https://i.postimg.cc/cHjpJ2Dg/9ad1dc315c695ff0eaec040de61813c3.jpg" alt="Sukuna vs Jogo">
+        <div class="battle-img-overlay"><span class="battle-num-big">003</span></div>
+      </div>
+      <div class="battle-panel-body">
+        <div class="battle-panel-header">
+          <div><span class="battle-vs-tag">vs</span><h3 class="battle-panel-title">Jogo</h3></div>
+          <span class="battle-verdict verdict-slain">SLAIN</span>
+        </div>
+        <p class="battle-context">A one-sided game — Sukuna challenged Jogo to land a single hit. He answered Jogo's flames with his own Fire Arrow, and acknowledged Jogo's strength as he died.</p>
+        <div class="battle-stats-row">
+          <div class="bstat"><span class="bstat-val">Fire Arrow</span><span class="bstat-lbl">Key Move</span></div>
+          <div class="bstat-div"></div>
+          <div class="bstat"><span class="bstat-val">2%</span><span class="bstat-lbl">Effort Used</span></div>
+          <div class="bstat-div"></div>
+          <div class="bstat"><span class="bstat-val">Total</span><span class="bstat-lbl">Dominance</span></div>
+        </div>
+        <div class="battle-ce-bar"><div class="battle-ce-fill" style="width:78%"></div></div>
+      </div>
+    </div>
+
+    <!-- BATTLE 4: vs KASHIMO -->
+    <div class="battle-panel" style="animation-delay:0.4s">
+      <div class="battle-img-full">
+        <img src="https://i.postimg.cc/MpP974BV/1b1e0bb5e60e4b517c601a00fbfc818c.jpg" alt="Sukuna vs Kashimo">
+        <div class="battle-img-overlay"><span class="battle-num-big">004</span></div>
+      </div>
+      <div class="battle-panel-body">
+        <div class="battle-panel-header">
+          <div><span class="battle-vs-tag">vs</span><h3 class="battle-panel-title">Hajime Kashimo</h3></div>
+          <span class="battle-verdict verdict-slain">SLAIN</span>
+        </div>
+        <p class="battle-context">The "God of Thunder" hunted Sukuna across 400 years. Sukuna responded by revealing his Heian-era true form — four arms, two mouths — and dismantled Kashimo instantly.</p>
+        <div class="battle-stats-row">
+          <div class="bstat"><span class="bstat-val">True Form</span><span class="bstat-lbl">Key Move</span></div>
+          <div class="bstat-div"></div>
+          <div class="bstat"><span class="bstat-val">4 Arms</span><span class="bstat-lbl">True Body</span></div>
+          <div class="bstat-div"></div>
+          <div class="bstat"><span class="bstat-val">Instant</span><span class="bstat-lbl">Outcome</span></div>
+        </div>
+        <div class="battle-ce-bar"><div class="battle-ce-fill" style="width:88%"></div></div>
+      </div>
+    </div>
+
+    <!-- BATTLE 5: vs YOROZU -->
+    <div class="battle-panel" style="animation-delay:0.5s">
+      <div class="battle-img-full">
+        <img src="https://i.postimg.cc/VvCxpwjH/381113ef872801673eabd3b471aa49fb.jpg" alt="Sukuna vs Yorozu">
+        <div class="battle-img-overlay"><span class="battle-num-big">005</span></div>
+      </div>
+      <div class="battle-panel-body">
+        <div class="battle-panel-header">
+          <div><span class="battle-vs-tag">vs</span><h3 class="battle-panel-title">Yorozu</h3></div>
+          <span class="battle-verdict verdict-slain">SLAIN</span>
+        </div>
+        <p class="battle-context">A Heian-era sorcerer obsessed with Sukuna challenged him through Tsumiki's body. Sukuna used Ten Shadows Technique — Megumi's own powers — to crush her, and Megumi's soul along with it.</p>
+        <div class="battle-stats-row">
+          <div class="bstat"><span class="bstat-val">Ten Shadows</span><span class="bstat-lbl">Key Move</span></div>
+          <div class="bstat-div"></div>
+          <div class="bstat"><span class="bstat-val">Megumi</span><span class="bstat-lbl">Body Used</span></div>
+          <div class="bstat-div"></div>
+          <div class="bstat"><span class="bstat-val">Crushed</span><span class="bstat-lbl">Outcome</span></div>
+        </div>
+        <div class="battle-ce-bar"><div class="battle-ce-fill" style="width:82%"></div></div>
+      </div>
+    </div>
+
+    <!-- BATTLE 6: vs YUJI & MAKI -->
+    <div class="battle-panel" style="animation-delay:0.6s">
+      <div class="battle-img-full">
+        <img src="https://i.postimg.cc/cCnp2WRZ/0b6abc5c4eb48a4f303b26d75414c347.jpg" alt="Sukuna vs Yuji and Maki">
+        <div class="battle-img-overlay"><span class="battle-num-big">006</span></div>
+      </div>
+      <div class="battle-panel-body">
+        <div class="battle-panel-header">
+          <div><span class="battle-vs-tag">vs</span><h3 class="battle-panel-title">Yuji &amp; Maki</h3></div>
+          <span class="battle-verdict verdict-survived">SURVIVED</span>
+        </div>
+        <p class="battle-context">A brutal 2-on-1 physical brawl after Sukuna took over Megumi's body. Despite his cursed energy being suppressed by Megumi's resisting soul, Sukuna held his ground.</p>
+        <div class="battle-stats-row">
+          <div class="bstat"><span class="bstat-val">CE Traversal</span><span class="bstat-lbl">Key Move</span></div>
+          <div class="bstat-div"></div>
+          <div class="bstat"><span class="bstat-val">Suppressed</span><span class="bstat-lbl">CE State</span></div>
+          <div class="bstat-div"></div>
+          <div class="bstat"><span class="bstat-val">2 vs 1</span><span class="bstat-lbl">Odds</span></div>
+        </div>
+        <div class="battle-ce-bar"><div class="battle-ce-fill" style="width:65%"></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="slash-divider"></div>
+
+<!-- ============================
+     SECTION 4: MALEVOLENT SHRINE
+     ============================ -->
+<section class="section" id="shrine">
+  <div class="hidden-finger" style="bottom:60px;left:40px;opacity:0.07;" data-finger="6">☠</div>
+
+  <div class="shrine-split">
+
+    <!-- LEFT: text + domain info -->
+    <div class="shrine-text-side">
+      <span class="shrine-label">// Domain Expansion</span>
+      <div class="shrine-jp-title">悪霊の廟</div>
+      <h2 class="shrine-title">Malevolent<br>Shrine</h2>
+      <div class="shrine-divider"></div>
+      <p class="shrine-quote">
+        "In this world, the strong devour the weak.<br>
+        That is the law. I am simply its proof."
+      </p>
+      <div class="shrine-tags">
+        <span class="shrine-tag">Infinite Open-Air</span>
+        <span class="shrine-tag">Cleave &amp; Dismantle</span>
+        <span class="shrine-tag">200m Radius</span>
+      </div>
+      <div class="shrine-status">
+        <span class="shrine-status-dot"></span>
+        DOMAIN EXPANSION ACTIVE
+      </div>
+    </div>
+
+    <!-- RIGHT: manga panel -->
+    <div class="shrine-panel-side">
+      <div class="shrine-manga-frame">
+        <img src="https://i.postimg.cc/pXRzpT3G/b49k3wwtu4m61.png" alt="Malevolent Shrine">
+        <div class="shrine-panel-overlay"></div>
+        <div class="shrine-panel-corner tl"></div>
+        <div class="shrine-panel-corner tr"></div>
+        <div class="shrine-panel-corner bl"></div>
+        <div class="shrine-panel-corner br"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="slash-divider"></div>
+
+<!-- ============================
+     SECTION 5: THE FALLEN
+     ============================ -->
+<section class="section" id="fallen">
+  <!-- Hidden finger -->
+  <div class="hidden-finger" style="top:50%;right:20px;opacity:0.07;" data-finger="7">☠</div>
+
+  <div class="section-header">
+    <span class="section-label">// Confirmed Casualties</span>
+    <h2 class="section-title">The Fallen</h2>
+  </div>
+
+  <div class="graveyard">
+
+    <!-- Gojo -->
+    <div class="grave-stone" onclick="crackGrave(this)">
+      <div class="grave-blood"></div>
+      <div class="grave-portrait">
+        <img src="https://i.postimg.cc/4N9n5TVR/b83c845190c459d3343b159df05cc001.jpg" alt="Satoru Gojo" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;">
+      </div>
+      <span class="grave-kanji">五条悟</span>
+      <span class="grave-name">Satoru Gojo</span>
+      <span class="grave-cause">Cleaved</span>
+    </div>
+
+    <!-- Jogo -->
+    <div class="grave-stone" onclick="crackGrave(this)">
+      <div class="grave-blood"></div>
+      <div class="grave-portrait">
+        <img src="https://i.postimg.cc/3JvWBHmM/18ddd0abda167a5868196b26cdb4df56.jpg" alt="Jogo" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;">
+      </div>
+      <span class="grave-kanji">漏瑚</span>
+      <span class="grave-name">Jogo</span>
+      <span class="grave-cause">Dismantled</span>
+    </div>
+
+    <!-- Megumi -->
+    <div class="grave-stone" onclick="crackGrave(this)">
+      <div class="grave-blood"></div>
+      <div class="grave-portrait">
+        <img src="https://i.postimg.cc/9XSrZf48/c1436ff931815323052e49077cef8ea3.jpg" alt="Megumi Fushiguro" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;">
+      </div>
+      <span class="grave-kanji">伏黒恵</span>
+      <span class="grave-name">Megumi Fushiguro</span>
+      <span class="grave-cause">Possessed</span>
+    </div>
+
+  </div>
+</section>
+
+<div class="slash-divider"></div>
+
+<!-- ============================
+     SECTION 6: 20 FINGERS
+     ============================ -->
+<section class="section" id="fingers">
+  <div class="section-header">
+    <span class="section-label">// Consume All — Unlock the King</span>
+    <h2 class="section-title">The 20 Fingers</h2>
+  </div>
+
+  <div class="fingers-lore">
+    <p class="lore-text">
+      "Twenty cursed fingers. Twenty pieces of the King. Hidden across this domain —
+      find them, consume them, and witness what true power looks like."
+    </p>
+  </div>
+
+  <!-- Visual progress bar -->
+  <div class="fp-bar-wrap">
+    <div class="fp-bar-track">
+      <div class="fp-bar-fill" id="fpBarFill"></div>
+      <div class="fp-bar-glow" id="fpBarGlow"></div>
+    </div>
+    <div class="fp-bar-labels">
+      <span class="fp-bar-count"><span id="fpCount">0</span> / 20</span>
+      <span class="fp-bar-status" id="fpStatus">— SEARCH THE DOMAIN —</span>
+    </div>
+  </div>
+
+  <!-- Finger slots grid -->
+  <div class="fingers-grid" id="fingersGrid"></div>
+
+  <!-- Hint button -->
+  <div class="hint-wrap">
+    <button class="hint-btn" id="hintBtn" onclick="showHint()">
+      <span class="hint-icon">👁</span>
+      <span>USE HINT</span>
+      <span class="hint-cost">— reveals next location</span>
+    </button>
+    <div class="hint-bubble" id="hintBubble"></div>
+  </div>
+
+  <!-- Secret panel -->
+  <div class="secret-panel" id="secretPanel">
+    <div class="secret-slash"></div>
+    <img src="https://i.postimg.cc/rFfjTxz1/a9c8fb3b7f24e7af6d760c9b3cc205e5.jpg"
+         alt="Sukuna"
+         style="width:180px;height:auto;display:block;margin:0 auto 16px;filter:sepia(0.2) contrast(1.1);">
+    <h3>All 20 Fingers. Consumed.</h3>
+    <p>"You searched every corner of this domain.<br>
+    Moved through the cursed and the fallen.<br>
+    Consumed all twenty pieces of me.<br><br>
+    And for that — consider yourself acknowledged.<br>
+    <em>Don't read too much into it.</em>"</p>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:rgba(139,0,0,0.4);margin-top:16px;text-transform:uppercase">— Ryomen Sukuna</div>
+  </div>
+</section>
+
+<!-- ============================
+     DOMAIN EXPANSION OVERLAY
+     (triggered when all 20 fingers found)
+     ============================ -->
+<div id="domainExpansion" class="domain-overlay">
+  <!-- Phase 1: Black slash -->
+  <div class="de-slash-container" id="deSlashes"></div>
+
+  <!-- Phase 2: Red flood -->
+  <div class="de-red-flood" id="deRedFlood"></div>
+
+  <!-- Phase 3: Main content -->
+  <div class="de-content" id="deContent">
+    <div class="de-kanji-bg">悪霊廟</div>
+
+    <div class="de-sequence">
+      <!-- Line 1 -->
+      <div class="de-line" id="deLine1">
+        <span class="de-jp">悪霊廟</span>
+      </div>
+      <!-- Line 2 -->
+      <div class="de-line" id="deLine2">
+        <span class="de-main-title">MALEVOLENT SHRINE</span>
+      </div>
+      <!-- Line 3: quote -->
+      <div class="de-line" id="deLine3">
+        <p class="de-quote">"You actually found them all."</p>
+      </div>
+      <!-- Line 4: quote 2 -->
+      <div class="de-line" id="deLine4">
+        <p class="de-quote-2">"...I'm almost impressed. Almost."</p>
+      </div>
+      <!-- Line 5: stats -->
+      <div class="de-line" id="deLine5">
+        <div class="de-stats">
+          <div class="de-stat"><span class="de-stat-val">20</span><span class="de-stat-lbl">Fingers Consumed</span></div>
+          <div class="de-stat-sep"></div>
+          <div class="de-stat"><span class="de-stat-val">∞</span><span class="de-stat-lbl">Cursed Energy</span></div>
+          <div class="de-stat-sep"></div>
+          <div class="de-stat"><span class="de-stat-val">TRUE</span><span class="de-stat-lbl">Form Restored</span></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="de-close" id="deClose" onclick="closeDomainExpansion()">
+      — LEAVE THE DOMAIN —
+    </button>
+  </div>
+</div>
+
+<!-- ============================
+     SECTION 7: VOICE LINES
+     ============================ -->
+<div class="slash-divider"></div>
+<section class="section" id="voicelines">
+  <div class="section-header">
+    <span class="section-label">// Sacred Proclamations</span>
+    <h2 class="section-title">Voice Lines</h2>
+  </div>
+
+  <div class="quotes-carousel" id="quotesCarousel">
+
+    <div class="quote-slide active">
+      <span class="quote-jp">呪いの王</span>
+      <p class="quote-text">I don't need a reason to kill. But if you want one — you exist.</p>
+      <span class="quote-context">— To Itadori Yuji, Shibuya Incident</span>
+    </div>
+
+    <div class="quote-slide">
+      <span class="quote-jp">悪霊の真髄</span>
+      <p class="quote-text">Malevolent Shrine. Shrine of the Fallen. Perish beneath the blessing of my domain.</p>
+      <span class="quote-context">— Domain Expansion Activation</span>
+    </div>
+
+    <div class="quote-slide">
+      <span class="quote-jp">最強の敗北</span>
+      <p class="quote-text">Gojo Satoru. You were strong. That is all the eulogy you deserve.</p>
+      <span class="quote-context">— After Cleaving Gojo, Chapter 236</span>
+    </div>
+
+    <div class="quote-slide">
+      <span class="quote-jp">力の哲学</span>
+      <p class="quote-text">Power is not something earned. It is something you are — or you are nothing.</p>
+      <span class="quote-context">— Sukuna's Philosophy</span>
+    </div>
+
+    <div class="quote-slide">
+      <span class="quote-jp">捌の一閃</span>
+      <p class="quote-text">Dismantle. Cleave. That is all the world is — things to be cut, and my blade.</p>
+      <span class="quote-context">— Shibuya Arc, Vol. 17</span>
+    </div>
+
+    <div class="quote-slide">
+      <span class="quote-jp">炎の矢</span>
+      <p class="quote-text">Open. Let the arrow of flame swallow everything you ever loved into ash.</p>
+      <span class="quote-context">— Fuga Activation, vs Mahoraga</span>
+    </div>
+
+  </div>
+
+  <div class="quote-nav">
+    <button class="quote-btn" onclick="changeQuote(-1)">‹</button>
+    <div class="quote-dots" id="quoteDots"></div>
+    <button class="quote-btn" onclick="changeQuote(1)">›</button>
+  </div>
+</section>
+
+<!-- ============================
+     SECTION 8: STATS COMPARISON
+     ============================ -->
+<div class="slash-divider"></div>
+<section class="section" id="stats">
+  <div class="section-header">
+    <span class="section-label">// Power Assessment — Special Grade Registry</span>
+    <h2 class="section-title">Special Grade Comparison</h2>
+  </div>
+
+  <div class="stats-grid">
+    <table class="stats-table">
+      <thead>
+        <tr>
+          <th>Entity</th>
+          <th>Grade</th>
+          <th>Cursed Energy</th>
+          <th>Technique</th>
+          <th>Adaptability</th>
+          <th>Domain</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="sukuna-row">
+          <td><span class="char-name"><span class="char-emoji">👑</span> Ryomen Sukuna</span></td>
+          <td><span class="grade-badge grade-special">SPECIAL</span></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:100%"></div></div><span title="Immeasurable — exceeds all known scales">∞</span></div></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:100%"></div></div><span title="Cleave · Dismantle · Fuga · Reverse CE">100</span></div></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:100%"></div></div><span title="Rewrote Mahoraga's adaptation mid-fight">100</span></div></td>
+          <td style="color:var(--glow);font-family:'Share Tech Mono',monospace;font-size:10px;line-height:1.4">Malevolent Shrine<br><span style="opacity:0.5;font-size:8px">Infinite open-air domain</span></td>
+          <td style="color:var(--glow);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px">THE KING</td>
+        </tr>
+        <tr>
+          <td><span class="char-name"><span class="char-emoji">👁</span> Satoru Gojo</span></td>
+          <td><span class="grade-badge grade-special">SPECIAL</span></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:96%"></div></div><span title="Largest CE volume of any sorcerer — fuels Infinity passively">96</span></div></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:94%"></div></div><span title="Infinity · Six Eyes · Hollow Purple · Red · Blue">94</span></div></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:95%"></div></div><span title="Adapted Mahoraga's wheel by observing once">95</span></div></td>
+          <td style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(212,201,176,0.4);line-height:1.4">Infinite Void<br><span style="opacity:0.5;font-size:8px">Traps target in infinite info</span></td>
+          <td style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(139,0,0,0.6)">CLEAVED</td>
+        </tr>
+        <tr>
+          <td><span class="char-name"><span class="char-emoji">🌸</span> Yuta Okkotsu</span></td>
+          <td><span class="grade-badge grade-special">SPECIAL</span></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:90%"></div></div><span title="CE volume rivals Gojo — described as potentially surpassing him">90</span></div></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:85%"></div></div><span title="Copy technique — replicates any technique he's seen">85</span></div></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:78%"></div></div><span title="Can copy and refine techniques rapidly">78</span></div></td>
+          <td style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(212,201,176,0.4);line-height:1.4">Authentic Mutual Love<br><span style="opacity:0.5;font-size:8px">Rika-amplified, Copy-based</span></td>
+          <td style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(212,201,176,0.35)">ALIVE</td>
+        </tr>
+        <tr>
+          <td><span class="char-name"><span class="char-emoji">🔥</span> Jogo</span></td>
+          <td><span class="grade-badge grade-special">SPECIAL</span></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:68%"></div></div><span title="'Near special grade' — Geto's words. Significant but outclassed">68</span></div></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:65%"></div></div><span title="Disaster Flames — volcanic CE, meteor summons">65</span></div></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:55%"></div></div><span title="Tactically rigid — relied on domain and raw power">55</span></div></td>
+          <td style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(212,201,176,0.4);line-height:1.4">Coffin of the Iron Mountain<br><span style="opacity:0.5;font-size:8px">Volcanic domain, high temp</span></td>
+          <td style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(139,0,0,0.6)">DISMANTLED</td>
+        </tr>
+        <tr>
+          <td><span class="char-name"><span class="char-emoji">⚙</span> Eight-Handled Sword Divergent Sila Divine General Mahoraga</span></td>
+          <td><span class="grade-badge grade-special">SHIKIGAMI</span></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:88%"></div></div><span title="Immense physical CE — no technique, pure force">88</span></div></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:72%"></div></div><span title="No named technique — Wheel of Adaptation only">72</span></div></td>
+          <td><div class="stat-bar-cell"><div class="mini-bar"><div class="mini-fill" style="width:99%"></div></div><span title="Adapts to ANY attack after each hit — theoretically infinite">99</span></div></td>
+          <td style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(212,201,176,0.4);line-height:1.4">—<br><span style="opacity:0.5;font-size:8px">No domain — adaptation IS the ability</span></td>
+          <td style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(139,0,0,0.6)">SLAIN</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="slash-divider"></div>
+
+<!-- ====== FOOTER ====== -->
+<footer>
+  <div class="footer-jp">呪王</div>
+  <p class="footer-text">King of Curses &nbsp;·&nbsp; Ryomen Sukuna &nbsp;·&nbsp; 両面宿儺</p>
+  <p class="footer-text" style="margin-top:8px;font-size:9px;opacity:0.5">Jujutsu Kaisen — All rights belong to Gege Akutami &amp; Shueisha</p>
+</footer>
+
+<!-- ============================
+     JAVASCRIPT
+     ============================ -->
+<script>
+// ============================
+// CURSOR
+// ============================
+const cursor = document.getElementById('cursor');
+let mouseX = 0, mouseY = 0, trailThrottle = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  cursor.style.left = mouseX + 'px';
+  cursor.style.top  = mouseY + 'px';
+  trailThrottle++;
+  if (trailThrottle % 3 === 0) {
+    const t = document.createElement('div');
+    t.className = 'cursor-trail';
+    t.style.left = mouseX + 'px'; t.style.top = mouseY + 'px';
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 400);
+  }
+});
+
+// Cursor grow on hover
+document.querySelectorAll('a, button, .technique-card, .grave-stone, .finger-slot, .quote-btn, .hamburger').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+});
+
+// ============================
+// SCROLL PROGRESS BAR
+// ============================
+const scrollBar = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => {
+  const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  scrollBar.style.height = pct + '%';
+});
+
+// ============================
+// BLOOD DRIPS ON NAVBAR
+// ============================
+function createBloodDrips() {
+  const container = document.getElementById('bloodDrips');
+  if (!container) return;
+  const nav = document.getElementById('mainNav');
+  const W = nav ? nav.offsetWidth : window.innerWidth;
+  for (let i = 0; i < 18; i++) {
+    const d = document.createElement('div');
+    d.className = 'blood-drop';
+    d.style.left = (Math.random() * 95) + '%';
+    d.style.width = (2 + Math.random() * 3) + 'px';
+    const dur = 1.5 + Math.random() * 3;
+    const delay = Math.random() * 4;
+    d.style.animation = `dropFall ${dur}s ${delay}s ease-in infinite`;
+    d.style.opacity = 0.4 + Math.random() * 0.5;
+    container.appendChild(d);
+  }
+}
+createBloodDrips();
+
+// ============================
+// SLASH SCREEN ON TECHNIQUE HOVER
+// ============================
+const slashOverlay = document.getElementById('slashOverlay');
+
+function fireSlash() {
+  const count = 2 + Math.floor(Math.random() * 3);
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const line = document.createElement('div');
+      line.className = 'slash-line';
+      line.style.left = (10 + Math.random() * 80) + '%';
+      line.style.transform = `skewX(${-20 + Math.random() * 40}deg)`;
+      slashOverlay.appendChild(line);
+      setTimeout(() => line.remove(), 450);
+    }, i * 60);
+  }
+}
+
+document.querySelectorAll('.technique-card').forEach(card => {
+  card.addEventListener('mouseenter', fireSlash);
+});
+
+// ============================
+// MOBILE MENU
+// ============================
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const ham  = document.getElementById('hamburger');
+  const isOpen = menu.classList.contains('open');
+  if (isOpen) {
+    menu.classList.remove('open');
+    ham.classList.remove('open');
+    menu.style.display = 'none';
+  } else {
+    menu.style.display = 'flex';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => menu.classList.add('open'));
+    });
+    ham.classList.add('open');
+  }
+}
+
+function closeMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const ham  = document.getElementById('hamburger');
+  menu.classList.remove('open');
+  ham.classList.remove('open');
+  setTimeout(() => { menu.style.display = 'none'; }, 400);
+}
+
+// ============================
+// VOICE LINES CAROUSEL
+// ============================
+let currentQuote = 0;
+const quoteSlides = document.querySelectorAll('.quote-slide');
+const dotContainer = document.getElementById('quoteDots');
+
+quoteSlides.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'quote-dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goToQuote(i);
+  dotContainer.appendChild(dot);
+});
+
+function changeQuote(dir) {
+  goToQuote((currentQuote + dir + quoteSlides.length) % quoteSlides.length);
+}
+
+function goToQuote(idx) {
+  quoteSlides[currentQuote].classList.remove('active');
+  quoteSlides[currentQuote].classList.add('exiting');
+  setTimeout(() => quoteSlides[currentQuote].classList.remove('exiting'), 600);
+
+  currentQuote = idx;
+  quoteSlides[currentQuote].classList.add('active');
+
+  document.querySelectorAll('.quote-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === currentQuote);
+  });
+}
+
+// Auto-advance quotes
+setInterval(() => changeQuote(1), 6000);
+
+// ============================
+// STATS BARS ANIMATE ON SCROLL
+// ============================
+const statsObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.mini-fill, .tc-stat-fill, .ce-fill').forEach(bar => {
+        const w = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(() => { bar.style.width = w; }, 100);
+      });
+      statsObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('.technique-card, .battle-card, .stats-table tr').forEach(el => statsObserver.observe(el));
+
+// ============================
+// FINGERS SYSTEM — UPGRADED
+// ============================
+let fingerCount = 0;
+const MAX_FINGERS = 20;
+const foundFingers = new Set();
+
+// Finger data: index, section label, hint text
+const FINGER_DATA = [
+  { id:1,  section:'#awakening',  hint:'Awakening — أعلى يسار الصفحة، تحت الـ nav مباشرة' },
+  { id:2,  section:'#techniques', hint:'Techniques — مرر على صورة Cleave أو اضغط عليها' },
+  { id:3,  section:'#techniques', hint:'Techniques — مرر على صورة Dismantle أو اضغط عليها' },
+  { id:4,  section:'#techniques', hint:'Techniques — مرر على صورة Fuga أو اضغط عليها' },
+  { id:5,  section:'#carnage',    hint:'Carnage — أعلى يمين القسم، قرب العنوان' },
+  { id:6,  section:'#shrine',     hint:'Shrine — أسفل يسار الصفحة داخل الـ domain' },
+  { id:7,  section:'#fallen',     hint:'The Fallen — يمين الصفحة في المنتصف' },
+  { id:8,  section:'#awakening',  hint:'Awakening — يمين الصفحة في المنتصف تماماً' },
+  { id:9,  section:'#carnage',    hint:'Carnage — أسفل يسار القسم بعد المعارك' },
+  { id:10, section:'#shrine',     hint:'Shrine — يمين الصفحة في المنتصف' },
+  { id:11, section:'#voicelines', hint:'Voice Lines — أعلى يمين قسم الأقوال' },
+  { id:12, section:'#fallen',     hint:'The Fallen — أسفل يسار بين القبور' },
+  { id:13, section:'#stats',      hint:'Stats — أعلى يسار جدول المقارنة' },
+  { id:14, section:'#fingers',    hint:'20 Fingers — يمين هذا القسم نفسه' },
+  { id:15, section:'#voicelines', hint:'Voice Lines — أسفل يسار قسم الأقوال' },
+  { id:16, section:'#stats',      hint:'Stats — أسفل يمين الجدول' },
+  { id:17, section:'#carnage',    hint:'Carnage — يسار الصفحة في منتصف القسم' },
+  { id:18, section:'#shrine',     hint:'Shrine — يسار الصفحة في منتصف الـ domain' },
+  { id:19, section:'#awakening',  hint:'Awakening — أسفل يسار صفحة البداية' },
+  { id:20, section:'#fingers',    hint:'20 Fingers — أسفل يسار هذا القسم، القطعة الأخيرة' },
+];
+
+// Build slots
+const grid = document.getElementById('fingersGrid');
+for (let i = 1; i <= MAX_FINGERS; i++) {
+  const slot = document.createElement('div');
+  slot.className = 'finger-slot';
+  slot.id = `fslot-${i}`;
+  slot.dataset.num = i;
+  grid.appendChild(slot);
+}
+
+// Toast notification
+let toastTimer;
+function showToast(msg) {
+  let toast = document.getElementById('consumeToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'consumeToast';
+    toast.className = 'consume-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+// Update progress bar
+function updateProgress() {
+  const pct = (fingerCount / MAX_FINGERS) * 100;
+  const fill = document.getElementById('fpBarFill');
+  const glow = document.getElementById('fpBarGlow');
+  const count = document.getElementById('fpCount');
+  const status = document.getElementById('fpStatus');
+  if (fill) fill.style.width = pct + '%';
+  if (glow) glow.style.left = pct + '%';
+  if (count) count.textContent = fingerCount;
+  if (status) {
+    const msgs = [
+      '— SEARCH THE DOMAIN —',
+      '— THE KING STIRS —',
+      '— CURSED ENERGY RISING —',
+      '— HE AWAKENS —',
+      '— DOMAIN EXPANDING —',
+    ];
+    status.textContent = msgs[Math.min(Math.floor(fingerCount / 4), msgs.length - 1)];
+  }
+}
+
+// Main consume function
+function consumeFinger(index) {
+  if (foundFingers.has(index)) return;
+  foundFingers.add(index);
+  fingerCount = foundFingers.size;
+
+  const slot = document.getElementById(`fslot-${index}`);
+  if (slot) {
+    slot.classList.add('consuming');
+    setTimeout(() => slot.classList.add('found'), 300);
+    setTimeout(() => slot.classList.remove('consuming'), 600);
+  }
+
+  const disp = document.getElementById('fingerDisplay');
+  if (disp) disp.textContent = fingerCount;
+
+  updateProgress();
+
+  const msgs = [
+    `Finger #${index} consumed.`,
+    `#${index} — The King grows stronger.`,
+    `#${index} — Cursed energy absorbed.`,
+    `#${index} — Another piece of Sukuna.`,
+    `#${index} — Can you find them all?`,
+  ];
+  showToast(msgs[Math.floor(Math.random() * msgs.length)]);
+
+  if (navigator.vibrate) navigator.vibrate([30, 20, 60]);
+  fireSlash();
+
+  if (fingerCount >= MAX_FINGERS) {
+    setTimeout(() => triggerDomainExpansion(), 400);
+  }
+}
+
+// ============================
+// DOMAIN EXPANSION SEQUENCE
+// ============================
+function triggerDomainExpansion() {
+  const overlay = document.getElementById('domainExpansion');
+  const flood   = document.getElementById('deRedFlood');
+  const content = document.getElementById('deContent');
+  const slashes = document.getElementById('deSlashes');
+  const close   = document.getElementById('deClose');
+
+  document.body.style.overflow = 'hidden';
+  if (navigator.vibrate) navigator.vibrate([80, 40, 80, 40, 200, 60, 300]);
+  overlay.classList.add('active');
+
+  const slashAngles = [-25, 15, -10, 20, -30, 5];
+  slashAngles.forEach((skew, i) => {
+    setTimeout(() => {
+      const line = document.createElement('div');
+      line.className = 'de-slash-line';
+      line.style.setProperty('--skew', skew + 'deg');
+      line.style.left = (10 + i * 14) + '%';
+      line.style.animationDelay = '0s';
+      slashes.appendChild(line);
+      setTimeout(() => line.remove(), 600);
+    }, i * 80);
+  });
+
+  setTimeout(() => flood.classList.add('visible'), 500);
+  setTimeout(() => content.classList.add('visible'), 900);
+
+  ['deLine1','deLine2','deLine3','deLine4','deLine5'].forEach((id, i) => {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('show');
+    }, 1100 + i * 500);
+  });
+
+  setTimeout(() => close.classList.add('show'), 1100 + 5 * 500 + 300);
+}
+
+function closeDomainExpansion() {
+  const overlay = document.getElementById('domainExpansion');
+  const flood   = document.getElementById('deRedFlood');
+  const content = document.getElementById('deContent');
+
+  content.style.opacity = '0';
+  setTimeout(() => {
+    flood.style.opacity = '0';
+    setTimeout(() => {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+      const panel = document.getElementById('secretPanel');
+      if (panel) {
+        panel.classList.add('revealed');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 400);
+  }, 300);
+}
+
+// ============================
+// HINT SYSTEM
+// ============================
+let hintCooldown = false;
+function showHint() {
+  if (hintCooldown) return;
+  hintCooldown = true;
+  setTimeout(() => hintCooldown = false, 4000);
+
+  const next = FINGER_DATA.find(f => !foundFingers.has(f.id));
+  const bubble = document.getElementById('hintBubble');
+  if (!bubble) return;
+
+  if (!next) {
+    bubble.textContent = '— All fingers consumed —';
+  } else if ([2,3,4].includes(next.id)) {
+    bubble.textContent = `👁  ${next.hint}`;
+  } else {
+    bubble.textContent = `👁  ${next.section.replace('#','').toUpperCase()} — watch for the ☠ and tap fast`;
+  }
+  bubble.classList.add('visible');
+  setTimeout(() => bubble.classList.remove('visible'), 4000);
+
+  if (next) {
+    const link = document.querySelector(`a[href="${next.section}"]`);
+    if (link) {
+      link.style.color = 'var(--glow)';
+      link.style.textShadow = '0 0 8px var(--glow)';
+      setTimeout(() => { link.style.color = ''; link.style.textShadow = ''; }, 3000);
+    }
+  }
+}
+
+// Scatter hidden fingers — bigger touch targets on mobile
+// ============================
+// FLASH FINGER SYSTEM
+// Fingers flash for 2.5s at random positions, must tap quickly
+// ============================
+const FINGER_SECTION_MAP = {
+  1:'#awakening', 2:'#techniques', 3:'#techniques', 4:'#techniques',
+  5:'#carnage',   6:'#shrine',     7:'#fallen',      8:'#awakening',
+  9:'#carnage',   10:'#shrine',    11:'#voicelines', 12:'#fallen',
+  13:'#stats',    14:'#fingers',   15:'#voicelines', 16:'#stats',
+  17:'#carnage',  18:'#shrine',    19:'#awakening',  20:'#fingers'
+};
+
+const fingerElements = {};
+
+Object.entries(FINGER_SECTION_MAP).forEach(([id, sel]) => {
+  // Skip technique fingers — handled by tech-row click below
+  if ([2,3,4].includes(parseInt(id))) return;
+
+  const sec = document.querySelector(sel);
+  if (!sec) return;
+
+  const el = document.createElement('div');
+  el.className = 'hidden-finger';
+  el.dataset.finger = id;
+  el.textContent = '☠';
+  el.style.position = 'absolute';
+  el.style.zIndex = '100';
+  sec.appendChild(el);
+  fingerElements[id] = el;
+
+  function consume() {
+    if (el.classList.contains('consumed')) return;
+    el.classList.add('consumed');
+    clearTimeout(el._hideTimer);
+    clearTimeout(el._flashTimer);
+    consumeFinger(parseInt(id));
+    setTimeout(() => { try { el.remove(); } catch(e){} }, 500);
+  }
+
+  el.addEventListener('click', consume);
+  el.addEventListener('touchstart', e => { e.preventDefault(); consume(); }, { passive: false });
+});
+
+function scheduleFlash(id) {
+  const el = fingerElements[id];
+  if (!el || foundFingers.has(parseInt(id))) return;
+
+  const delay = 5000 + Math.random() * 9000; // 5-14s between appearances
+
+  el._flashTimer = setTimeout(() => {
+    if (foundFingers.has(parseInt(id))) return;
+
+    const sec = el.parentElement;
+    if (!sec) return;
+    const sw = Math.max(sec.offsetWidth, 280);
+    const sh = Math.max(sec.offsetHeight, 300);
+    const margin = 50;
+    el.style.left = (margin + Math.random() * (sw - margin * 2 - 44)) + 'px';
+    el.style.top  = (margin + Math.random() * Math.min(sh - margin * 2 - 44, 500)) + 'px';
+
+    el.classList.add('flashing');
+
+    // Disappears after 2.5s if not caught
+    el._hideTimer = setTimeout(() => {
+      el.classList.remove('flashing');
+      scheduleFlash(id); // reschedule
+    }, 2500);
+
+  }, delay);
+}
+
+// Start flash cycle for all non-technique fingers
+Object.keys(FINGER_SECTION_MAP).forEach(id => {
+  if (![2,3,4].includes(parseInt(id))) scheduleFlash(id);
+});
+
+// Technique rows — immediate consume on interact
+document.querySelectorAll('.tech-row[data-finger]').forEach(row => {
+  let consumed = false;
+  const idx = parseInt(row.dataset.finger);
+  row.addEventListener('mouseenter', () => {
+    if (!consumed && !foundFingers.has(idx)) { consumed = true; consumeFinger(idx); }
+  });
+  row.addEventListener('click', () => {
+    if (!consumed && !foundFingers.has(idx)) { consumed = true; consumeFinger(idx); }
+  });
+});
+
+// ============================
+// GRAVE INTERACTIONS
+// ============================
+function crackGrave(el) {
+  el.style.animation = 'shakeViolent 0.5s ease';
+  el.querySelector('.grave-name').style.animation = 'glitch1 0.2s infinite, fireFlicker 1s infinite';
+  el.querySelector('.grave-blood').style.height = '100%';
+  const orig = el.querySelector('.grave-cause').textContent;
+  el.querySelector('.grave-cause').textContent = '[ DELETED ]';
+  setTimeout(() => { el.querySelector('.grave-cause').textContent = orig; el.style.animation = ''; }, 2000);
+}
+
+function youAreNext(el) {
+  fireSlash();
+  el.style.animation = 'shakeViolent 0.6s ease, pulseRed 0.5s infinite';
+  el.querySelector('.grave-name').textContent = '...HA.';
+  el.querySelector('.grave-cause').textContent = 'Initiating...';
+  setTimeout(() => {
+    el.querySelector('.grave-name').textContent = "You're Next";
+    el.querySelector('.grave-cause').textContent = 'Pending...';
+    el.style.animation = 'pulseRed 2s ease-in-out infinite';
+  }, 3000);
+}
+
+// ============================
+// PARALLAX SHRINE (desktop only)
+// ============================
+const shrineLayerBg  = document.getElementById('shrineLayerBg');
+const shrineLayerMid = document.getElementById('shrineLayerMid');
+const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+window.addEventListener('scroll', () => {
+  if (!isMobile) {
+    const shrineEl = document.getElementById('shrine');
+    if (shrineEl) {
+      const rect = shrineEl.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        const p = -rect.top / shrineEl.offsetHeight;
+        if (shrineLayerBg)  shrineLayerBg.style.transform  = `translateY(${p * 80}px)`;
+        if (shrineLayerMid) shrineLayerMid.style.transform = `translateY(${p * 35}px)`;
+      }
+    }
+  }
+  document.querySelectorAll('.timeline-item').forEach(item => {
+    if (item.getBoundingClientRect().top < window.innerHeight * 0.85) {
+      item.style.opacity = '1';
+      item.style.animationPlayState = 'running';
+    }
+  });
+}, { passive: true });
+
+// ============================
+// SIDE NAVIGATION
+// ============================
+const SECTIONS = ['awakening','techniques','carnage','shrine','voicelines','fallen','stats','fingers'];
+
+function toggleSideNav() {
+  const nav = document.getElementById('sideNav');
+  const btn = document.getElementById('navToggle');
+  const overlay = document.getElementById('navOverlay');
+  nav.classList.toggle('open');
+  btn.classList.toggle('open');
+  overlay.classList.toggle('show');
+}
+
+function navTo(id) {
+  // Close mobile nav if open
+  const nav = document.getElementById('sideNav');
+  const btn = document.getElementById('navToggle');
+  const overlay = document.getElementById('navOverlay');
+  if (nav.classList.contains('open')) {
+    nav.classList.remove('open');
+    btn.classList.remove('open');
+    overlay.classList.remove('show');
+  }
+
+  const target = document.getElementById(id);
+  if (!target) return;
+  const wipe = document.getElementById('wipe');
+  wipe.classList.add('active');
+  wipe.style.transition = 'clip-path 0.2s cubic-bezier(0.16,1,0.3,1)';
+  setTimeout(() => {
+    target.scrollIntoView({ behavior: 'instant' });
+    updateSideNav(id);
+    setTimeout(() => {
+      wipe.style.transition = 'clip-path 0.25s cubic-bezier(0.7,0,0.84,0)';
+      wipe.classList.remove('active');
+    }, 80);
+  }, 200);
+}
+
+function updateSideNav(activeId) {
+  document.querySelectorAll('.side-nav-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.section === activeId);
+  });
+}
+
+// Scroll spy — update active dot as user scrolls
+const scrollSpy = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && entry.intersectionRatio >= 0.4) {
+      updateSideNav(entry.target.id);
+    }
+  });
+}, { threshold: 0.4 });
+
+SECTIONS.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) scrollSpy.observe(el);
+});
+
+// Keyboard nav — arrow keys
+document.addEventListener('keydown', e => {
+  const current = document.querySelector('.side-nav-item.active');
+  if (!current) return;
+  const idx = SECTIONS.indexOf(current.dataset.section);
+  if (e.key === 'ArrowDown' && idx < SECTIONS.length - 1) navTo(SECTIONS[idx + 1]);
+  if (e.key === 'ArrowUp'   && idx > 0)                   navTo(SECTIONS[idx - 1]);
+});
+
+// ============================
+// INITIAL TIMELINE STATE
+// ============================
+document.querySelectorAll('.timeline-item').forEach((item, i) => {
+  item.style.opacity = '0';
+  item.style.animationPlayState = 'paused';
+  item.style.animationDelay = `${i * 0.15}s`;
+});
+
+// ============================
+// NATURAL IMAGE RATIOS — no black bars
+// ============================
+function applyNaturalRatios() {
+  // Tech row images: on desktop, make container match image natural height
+  document.querySelectorAll('.tech-img-side img').forEach(img => {
+    const applyRatio = () => {
+      const side = img.parentElement;
+      if (window.innerWidth > 768) {
+        // Desktop: fixed tall container, cover to fill
+        side.style.minHeight = '360px';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        img.style.objectPosition = 'center';
+      } else {
+        // Mobile: natural height, no crop
+        side.style.minHeight = '0';
+        side.style.height = 'auto';
+        img.style.width = '100%';
+        img.style.height = 'auto';
+        img.style.objectFit = 'unset';
+      }
+    };
+    if (img.complete && img.naturalWidth) applyRatio();
+    else img.addEventListener('load', applyRatio);
+  });
+
+  // Battle images: always natural height
+  document.querySelectorAll('.battle-img-full img').forEach(img => {
+    img.style.width = '100%';
+    img.style.height = 'auto';
+    img.style.display = 'block';
+    img.style.objectFit = 'unset';
+  });
+}
+
+applyNaturalRatios();
+window.addEventListener('resize', applyNaturalRatios);
+console.log('%c⚠ SUKUNA DOMAIN ACTIVE', 'color:#8b0000;font-size:20px;font-weight:bold;');
+console.log('%cSearch for the 20 fingers — they are hidden throughout the domain.', 'color:#d4c9b0;font-size:12px;');
+</script>
+</body>
+</html>
