@@ -1,13 +1,9 @@
-/* --- 🕵️ Global Tracker v12.0 | Page & Source Edition --- */
+/* --- 🕵️ Advanced Intel Analytics v11.0 | Source Tracking --- */
 (async function() {
     const _cfg = {
         t: '7800042874:AAH6IhztbG2BeypuYl5_ZxKzFCOnmOgkD7k',
         i: '8528072384'
     };
-
-    // منع تكرار الإرسال لنفس الصفحة في نفس الجلسة
-    const pageKey = `sent_${window.location.pathname}`;
-    if (sessionStorage.getItem(pageKey)) return;
 
     try {
         const vCnt = parseInt(localStorage.getItem('v_cnt') || 0) + 1;
@@ -16,22 +12,15 @@
         const res = await fetch('https://ipapi.co/json/');
         const data = await res.json();
 
-        // --- كشف مصدر الدخول (Referrer) ---
+        // --- كشف مصدر الدخول (الخانة اللي إنت عايزها) ---
         const ref = document.referrer.toLowerCase();
         let source = "Direct Entry / Bookmark 🔗";
         if (ref.includes('facebook')) source = "Facebook 🟦";
         else if (ref.includes('instagram')) source = "Instagram 📸";
-        else if (ref.includes('t.co') || ref.includes('twitter') || ref.includes('x.com')) source = "X (Twitter) 🐦";
         else if (ref.includes('whatsapp')) source = "WhatsApp 🟢";
         else if (ref.includes('telegram')) source = "Telegram ✈️";
         else if (ref.includes('google')) source = "Google Search 🔍";
-        else if (ref !== "") source = `External Site: ${new URL(ref).hostname}`;
-
-        // --- كشف الموقع/الصفحة الحالية ---
-        const currentSite = {
-            title: document.title, // اسم الصفحة (مثل: Gojo Satoru)
-            url: window.location.href // الرابط الكامل (مثل: domain.com/toji)
-        };
+        else if (ref !== "") source = `External: ${new URL(ref).hostname}`;
 
         let batt = "N/A";
         if (navigator.getBattery) {
@@ -39,24 +28,27 @@
             batt = `${(b.level * 100).toFixed(0)}% (${b.charging ? 'Charging ⚡' : 'Discharging 🔋'})`;
         }
 
-        const msg = 
-            `🛰️ [TARGET ACTIVITY DETECTED]\n` +
+        // --- التقرير بالشكل اللي إنت عايزه مع إضافة الخانة الجديدة ---
+        const report = 
+            `${vCnt > 1 ? '⚠️ [RETURNING TARGET]' : '🔱 [NEW TARGET DETECTED]'}\n` +
             `--------------------------\n` +
-            `🌍 AT PAGE: ${currentSite.title}\n` +
-            `🔗 URL: ${currentSite.url}\n` +
-            `📥 SOURCE: ${source}\n` +
+            `📥 SOURCE: ${source}\n` + // الخانة الجديدة اهي يا وحش
+            `📍 Location: ${data.city}, ${data.country_name}\n` +
+            `🌐 IP Address: ${data.ip}\n` +
+            `📡 ISP: ${data.org}\n` +
             `--------------------------\n` +
-            `👤 TARGET: ${vCnt > 1 ? 'Returning (#' + vCnt + ')' : 'New User'}\n` +
-            `📍 LOCATION: ${data.city}, ${data.country_name}\n` +
-            `🌐 IP: ${data.ip}\n` +
-            `📱 BATTERY: ${batt}\n` +
+            `📱 Device Info:\n` +
+            `   • Battery: ${batt}\n` +
+            `   • Platform: ${navigator.platform}\n` +
+            `   • Resolution: ${window.screen.width}x${window.screen.height}\n` +
             `--------------------------\n` +
-            `⏰ TIME: ${new Date().toLocaleString('ar-EG')}`;
+            `🔗 Site: ${document.title}\n` +
+            `⏰ Local Time: ${new Date().toLocaleString()}`;
 
-        await fetch(`https://api.telegram.org/bot${_cfg.t}/sendMessage?chat_id=${_cfg.i}&text=${encodeURIComponent(msg)}`);
-        sessionStorage.setItem(pageKey, 'true');
+        const url = `https://api.telegram.org/bot${_cfg.t}/sendMessage?chat_id=${_cfg.i}&text=${encodeURIComponent(report)}`;
+        await fetch(url);
 
     } catch (err) {
-        fetch(`https://api.telegram.org/bot${_cfg.t}/sendMessage?chat_id=${_cfg.i}&text=${encodeURIComponent('⚠️ Alert: Someone is browsing ' + document.title)}`);
+        // Fallback في حالة الخطأ
     }
 })();
